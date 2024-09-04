@@ -67,8 +67,8 @@ class MainActivity : ComponentActivity() {
                             Text("Find Parking")
 
                         }
+                        ParkingOverviewScreen()
                     }
-
                 }
             }
         }

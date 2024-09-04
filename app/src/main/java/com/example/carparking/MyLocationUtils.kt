@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.content.pm.PackageManager
 import com.example.carparking.components.MapsTest
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
