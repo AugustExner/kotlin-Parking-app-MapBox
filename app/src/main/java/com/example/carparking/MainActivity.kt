@@ -24,9 +24,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.carparking.components.parkingoverview.ParkingOverviewScreen
+import com.example.carparking.components.parkingspots.ParkingSpotsScreen
 import androidx.compose.ui.unit.dp
 import com.example.carparking.components.MapsTest
 import com.example.carparking.ui.theme.CarParkingTheme
+
 import getUserLocation
 
 
