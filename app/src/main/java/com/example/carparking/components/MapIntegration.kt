@@ -10,6 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.carparking.components.parkingoverview.ParkingOverview
+import com.example.carparking.components.parkingoverview.ParkingViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -19,8 +22,9 @@ import com.google.maps.android.compose.rememberMarkerState
 import getUserLocation
 
 @Composable
-fun MapsTest(context: Context) {
+fun MapsTest(context: Context, parkingViewModel: ParkingViewModel = viewModel()) {
     var userLocation by remember { mutableStateOf<LatLng?>(null) }
+    val parkingSpots = parkingViewModel.parkingSpots
 
     LaunchedEffect(Unit) {
         try {
@@ -30,25 +34,34 @@ fun MapsTest(context: Context) {
         }
     }
     if(userLocation != null) {
-        val storCenterNord = userLocation
-        val storCenterNordMarkerState = rememberMarkerState(position = storCenterNord!!)
+        val userLatLng = userLocation
+        val userMarkerState = rememberMarkerState(position = userLatLng!!)
         val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(storCenterNord, 15f)
+            position = CameraPosition.fromLatLngZoom(userLatLng, 15f)
         }
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState
         ) {
             Marker(
-                state = storCenterNordMarkerState,
+                state = userMarkerState,
                 title = "Storcenter Nord",
                 snippet = "Marker in Storcenter Nord"
             )
+            parkingSpots.map {
+                CustomMarker(parkingSpot = it)
+            }
         }
     }
+}
 
-
-
+@Composable
+fun CustomMarker(parkingSpot: ParkingOverview) {
+    val markerPositionState = rememberMarkerState(position = LatLng(parkingSpot.latitude.toDouble(), parkingSpot.longitude.toDouble()))
+    Marker(
+        state = markerPositionState,
+        title = parkingSpot.parkeringsplads
+    )
 }
 
 
