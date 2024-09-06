@@ -10,18 +10,16 @@ import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
 import androidx.activity.ComponentActivity
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.content.pm.PackageManager
-import com.example.carparking.components.MapsTest
+import com.example.carparking.components.MapComponents.MapsTest
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.math.log
 
 // Constants
 const val LOCATION_TAG = "LocationUpdates"
