@@ -107,5 +107,7 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.ui.tooling)
 
-
+    implementation(libs.android)
+    // If you're using compose also add the compose extension
+    implementation(libs.extension.maps.compose)
 }

@@ -1,4 +1,4 @@
-package com.example.carparking.components
+package com.example.carparking.components.MapComponents
 
 import android.content.Context
 import android.util.Log
@@ -17,9 +17,11 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import getUserLocation
+
 
 @Composable
 fun MapsTest(context: Context, parkingViewModel: ParkingViewModel = viewModel()) {
@@ -29,6 +31,7 @@ fun MapsTest(context: Context, parkingViewModel: ParkingViewModel = viewModel())
     LaunchedEffect(Unit) {
         try {
             userLocation = getUserLocation(context)
+
         } catch (e: Exception) {
             Log.e("LocationError", "Failed to get location: ${e.message}")
         }
@@ -43,12 +46,15 @@ fun MapsTest(context: Context, parkingViewModel: ParkingViewModel = viewModel())
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState
         ) {
+
             Marker(
                 state = userMarkerState,
-                title = "Storcenter Nord",
-                snippet = "Marker in Storcenter Nord"
+                title = "Your Location",
+                snippet = "Marker at user location"
             )
+
             parkingSpots.map {
+
                 CustomMarker(parkingSpot = it)
             }
         }
@@ -62,8 +68,7 @@ fun CustomMarker(parkingSpot: ParkingOverview) {
         state = markerPositionState,
         title = parkingSpot.parkeringsplads
     )
+    MarkerComposable {
+
+    }
 }
-
-
-
-
