@@ -60,6 +60,13 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.play.services.maps)
+
+    //MapBox
+    implementation("com.mapbox.maps:android:11.6.0")
+    implementation("com.mapbox.extension:maps-compose:11.6.0")
+
+
+
     //implementation(libs.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -69,4 +76,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.maps.compose)
+
+
+
 }

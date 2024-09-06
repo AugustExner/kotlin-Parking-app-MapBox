@@ -3,91 +3,62 @@ package com.example.carparking
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.carparking.Components.FilledButtonExample
+import com.example.carparking.Components.MapsTestMapBox
+import com.example.carparking.Components.SimpleOutlinedTextField
 import com.example.carparking.ui.theme.CarParkingTheme
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
-import com.google.maps.android.compose.rememberMarkerState
+import com.example.carparking.utils.PermissionHandler
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var permissionHandler: PermissionHandler
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            CarParkingTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
+        // Initialize the PermissionHandler
+        permissionHandler = PermissionHandler(this)
+
+        // Check and request location permission
+        permissionHandler.checkAndRequestLocationPermission {
+            // Permission granted, load the map
+            setContent {
+                CarParkingTheme {
+                    var inputText by remember { mutableStateOf("") }
+
                     Column(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding),
+                            .fillMaxSize(),
                     ) {
+                        // Input field at the top
+                        SimpleOutlinedTextField(onTextChange = { inputText = it })
 
-                        MapsTest()
-                        FilledButtonExample()
+                        // Map in the middle
+                        MapsTestMapBox() // Assuming this is your map implementation
+
+                        // Button at the bottom
+                        FilledButtonExample(text = inputText)
 
                     }
-
                 }
             }
         }
     }
-}
 
-@Composable
-fun MapsTest() {
-    val storCenterNord = LatLng(56.171080, 10.189440)
-    val storCenterNordMarkerState = rememberMarkerState(position = storCenterNord)
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(storCenterNord, 15f)
-    }
-    GoogleMap(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .padding(top = 16.dp)
-            .padding(bottom = 16.dp)
-            .height(650.dp)
-            .clip(RoundedCornerShape(25.dp))
-            .border(
-                width = 2.dp,
-                color = Color.Black,
-                shape = RoundedCornerShape(25.dp)
-            ),
-
-
-        cameraPositionState = cameraPositionState
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
-        Marker(
-            state = storCenterNordMarkerState,
-            title = "Storcenter Nord",
-            snippet = "Marker in Storcenter Nord"
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CarParkingTheme {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // Forward the result to the PermissionHandler
+        permissionHandler.handlePermissionResult(requestCode, permissions, grantResults)
     }
 }
