@@ -1,5 +1,6 @@
 package com.example.carparking
 
+import PermissionHandler
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -30,53 +31,68 @@ import com.mapbox.android.core.permissions.PermissionsManager
 
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var permissionHandler: PermissionHandler
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            CarParkingTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        CenterAlignedTopAppBar(
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                titleContentColor = MaterialTheme.colorScheme.primary,
-                            ),
-                            title = {
-                                Text("PARK3")
-                            }
-                        )
-                    },
-                ) { innerPadding ->
-                    Column(modifier = Modifier.padding(all = 8.dp)) {
-                        Box(modifier = Modifier
-                            .padding(innerPadding)
-                            .fillMaxWidth()
-                            .height(height = 500.dp)) {
-                            //PermissionAwareLocationDisplay(context = this@MainActivity)
-                            MapBoxTest(context = this@MainActivity)
-                        }
-                        ElevatedButton(onClick = { println("You Clicked the button!") },
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                            modifier = Modifier.align(alignment = Alignment.CenterHorizontally)) {
-                            Text("Find Parking")
 
+        // Initialize the PermissionHandler
+        permissionHandler = PermissionHandler(this)
+
+        // Check and request location permission
+        permissionHandler.checkAndRequestLocationPermission {
+
+
+            enableEdgeToEdge()
+            setContent {
+                CarParkingTheme {
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        topBar = {
+                            CenterAlignedTopAppBar(
+                                colors = TopAppBarDefaults.topAppBarColors(
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    titleContentColor = MaterialTheme.colorScheme.primary,
+                                ),
+                                title = {
+                                    Text("PARK3")
+                                }
+                            )
+                        },
+                    ) { innerPadding ->
+                        Column(modifier = Modifier.padding(all = 8.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(innerPadding)
+                                    .fillMaxWidth()
+                                    .height(height = 500.dp)
+                            ) {
+                                //PermissionAwareLocationDisplay(context = this@MainActivity)
+                                MapBoxTest(context = this@MainActivity)
+                            }
+                            ElevatedButton(
+                                onClick = { println("You Clicked the button!") },
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                            ) {
+                                Text("Find Parking")
+
+                            }
+                            //ParkingOverviewScreen()
                         }
-                        //ParkingOverviewScreen()
                     }
                 }
             }
         }
     }
-}
 
 
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CarParkingTheme {
+    @Preview(showBackground = true)
+    @Composable
+    fun GreetingPreview() {
+        CarParkingTheme {
+        }
     }
 }
