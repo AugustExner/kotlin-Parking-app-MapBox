@@ -20,7 +20,7 @@ fun printTextContent(text: String) {
 }
 
 @Composable
-fun MySearchBar(onTextChange: (String) -> Unit) {
+fun GoToDestination(onTextChange: (String) -> Unit) {
     var text by remember { mutableStateOf("") }
     OutlinedTextField(
         value = text,
@@ -42,6 +42,6 @@ fun MySearchBar(onTextChange: (String) -> Unit) {
 fun SimpleOutlinedTextFieldPreview() {
     // Simulate a function to handle text changes (not used in preview)
     val onTextChange: (String) -> Unit = {}
-    MySearchBar(onTextChange = onTextChange)
+    GoToDestination(onTextChange = onTextChange)
 }
 

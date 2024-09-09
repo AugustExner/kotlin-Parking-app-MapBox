@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FindParkingButton(text: String) {
+fun FindMyParkingspot(text: String) {
     Button(
         onClick = { printTextContent(text) },  // Call the method with the current text
         shape = RoundedCornerShape(16.dp),
