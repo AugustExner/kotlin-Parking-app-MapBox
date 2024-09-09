@@ -23,10 +23,12 @@ import com.example.carparking.components.parkingoverview.ParkingViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
+import com.mapbox.maps.dsl.cameraOptions
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
 import com.mapbox.maps.extension.compose.annotation.rememberIconImage
+import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import getUserLocation
 
 
@@ -48,21 +50,27 @@ fun MapBoxTest(context: Context, parkingViewModel: ParkingViewModel = viewModel(
         }
     }
 
+    val mapViewportState = rememberMapViewportState {
+        setCameraOptions {
+            center(Point.fromLngLat(56.162937, 10.203921))
+            zoom(12.0)
+        }
+    }
+
+    LaunchedEffect(location) {
+        location?.let { loc ->
+            // Update camera to center on user location when available
+            mapViewportState.setCameraOptions(){
+                center(Point.fromLngLat(loc.longitude, loc.latitude))
+                zoom(12.0)
+            }
+        }
+    }
+
     // Render the map regardless of userLocation
-    if (location != null) {
         MapboxMap(
             Modifier.fillMaxSize(),
-            mapViewportState = rememberMapViewportState {
-                setCameraOptions {
-                    zoom(12.0)
-                    // Set a default center or wait for user location
-                    if (location != null) {
-                        center(Point.fromLngLat(location!!.longitude, location!!.latitude))
-                    } else {
-                        center(Point.fromLngLat(9.536354, 55.711311))
-                    }
-                }
-            },
+            mapViewportState = mapViewportState
         ) {
             // Once the location is fetched, show the user marker
             if (location != null) {
@@ -79,6 +87,6 @@ fun MapBoxTest(context: Context, parkingViewModel: ParkingViewModel = viewModel(
             }
         }
     }
-}
+
 
 
