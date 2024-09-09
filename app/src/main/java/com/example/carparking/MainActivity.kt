@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.carparking.components.parkingoverview.ParkingOverviewScreen
 import androidx.compose.ui.unit.dp
-import com.example.carparking.Components.FindParking
+import com.example.carparking.Components.FindParkingButton
 import com.example.carparking.Components.MySearchBar
 import com.example.carparking.components.MapComponents.MapBoxTest
 import com.example.carparking.ui.theme.CarParkingTheme
@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         MySearchBar(onTextChange = { inputText = it })
-                        FindParking(text = inputText)
+                        FindParkingButton(text = inputText)
 
                        // ParkingOverviewScreen()
                     }
