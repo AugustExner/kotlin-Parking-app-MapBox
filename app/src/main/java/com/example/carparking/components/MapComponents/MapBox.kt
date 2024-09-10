@@ -52,13 +52,12 @@ fun MapBoxTest(context: Context, parkingViewModel: ParkingViewModel = viewModel(
     }
 
     val mapViewportState = rememberMapViewportState {
-
     }
 
     LaunchedEffect(location) {
         location?.let { loc ->
             // Update camera to center on user location when available
-            mapViewportState.setCameraOptions(){
+            mapViewportState.setCameraOptions() {
                 center(Point.fromLngLat(loc.longitude, loc.latitude))
                 zoom(12.0)
             }
