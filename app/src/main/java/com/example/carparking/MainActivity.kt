@@ -16,12 +16,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.carparking.Components.FindMyParkingspot
-
 import com.example.carparking.Components.GoToDestination
 
-import com.example.carparking.components.MapComponents.MapBoxTest
+
+import com.example.carparking.components.mapComponents.MapBoxTest
 import com.example.carparking.ui.theme.CarParkingTheme
-import com.mapbox.android.core.permissions.PermissionsManager
 
 class MainActivity : ComponentActivity() {
 
@@ -43,7 +42,9 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                     ) { innerPadding ->
                         // You should apply the innerPadding to the main content
-                        Column(modifier = Modifier.padding(innerPadding).padding(8.dp)) {
+                        Column(modifier = Modifier
+                            .padding(innerPadding)
+                            .padding(8.dp)) {
                             var inputText by remember { mutableStateOf("") }
                             Box(
                                 modifier = Modifier

@@ -1,4 +1,4 @@
-package com.example.carparking.components.MapComponents
+package com.example.carparking.components.mapComponents
 
 import PermissionHandler
 import android.app.Activity
@@ -20,16 +20,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.R
 import com.example.carparking.components.parkingoverview.ParkingViewModel
-import com.google.android.gms.maps.model.LatLng
 import com.mapbox.geojson.Point
-import com.mapbox.maps.MapView
-import com.mapbox.maps.dsl.cameraOptions
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
 import com.mapbox.maps.extension.compose.annotation.rememberIconImage
-import com.mapbox.maps.plugin.animation.MapAnimationOptions
-import getUserLocation
 
 
 @Composable
@@ -52,7 +47,10 @@ fun MapBoxTest(context: Context, parkingViewModel: ParkingViewModel = viewModel(
     }
 
     val mapViewportState = rememberMapViewportState {
-
+        setCameraOptions() {
+            center(Point.fromLngLat(56.162937, 10.203921))
+            zoom(12.0)
+        }
     }
 
     LaunchedEffect(location) {

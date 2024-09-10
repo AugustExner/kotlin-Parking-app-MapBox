@@ -1,10 +1,13 @@
-package com.example.carparking.components.MapComponents
+package com.example.carparking.components.mapComponents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,28 +46,24 @@ fun CustomMapBoxMarker(parkingSpot: ParkingOverview) {
         Card(elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 5.dp
         ),
-            modifier = Modifier.size(width = 120.dp, height = 50.dp)
+            modifier = Modifier.width(IntrinsicSize.Min).height(60.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-
-                modifier = Modifier.padding(2.dp)) {
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                modifier = Modifier.padding(end = 5.dp)
+                ) {
                 Image(painter = painterResource(
                     id = R.drawable.parking_icon),
                     contentDescription = "Parking Icon",
-                    contentScale = ContentScale.Inside,
-                    modifier = Modifier)
-                Spacer(modifier = Modifier.width(5.dp))
-                Column(modifier = Modifier) {
-                    Text(text = parkingSpot.parkeringsplads,
-                        fontSize = 10.sp,
-                        overflow = TextOverflow.Clip)
-                    Text(text = "${parkingSpot.ledigePladser}/${parkingSpot.antalPladser}", fontSize = 10.sp)
+                    contentScale = ContentScale.Inside)
+                    Text(text = parkingSpot.parkeringsplads, maxLines = 1,
+                        fontSize = 12.sp,
+                        modifier = Modifier.width(IntrinsicSize.Max))
+                    Text(text = "${parkingSpot.ledigePladser}/${parkingSpot.antalPladser}", fontSize = 10.sp)}
                 }
-            }
         }
     }
-}
+
 
 @Preview(showBackground = true)
 @Composable
