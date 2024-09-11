@@ -69,6 +69,7 @@ class MainActivity : ComponentActivity() {
 
                             // Pass the inputText and context to FindMySparkingButton
                             FindMyParkingButton(text = inputText, context = this@MainActivity)
+
                         }
                     }
                 }
