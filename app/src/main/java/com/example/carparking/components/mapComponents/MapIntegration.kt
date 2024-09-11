@@ -12,7 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.components.parkingoverview.ParkingOverview
-import com.example.carparking.components.parkingoverview.ParkingViewModel
+import com.example.carparking.components.parkingoverview.ParkingModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -24,7 +24,7 @@ import getUserLocation
 
 
 @Composable
-fun MapsTest(context: Context, parkingViewModel: ParkingViewModel = viewModel()) {
+fun MapsTest(context: Context, parkingViewModel: ParkingModel = viewModel()) {
     var userLocation by remember { mutableStateOf<LatLng?>(null) }
     val parkingSpots = parkingViewModel.parkingSpots
 

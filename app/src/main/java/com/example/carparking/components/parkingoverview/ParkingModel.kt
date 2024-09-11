@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 
-class ParkingViewModel : ViewModel() {
+class ParkingModel : ViewModel() {
 
     // Corrected state management
     var parkingSpots: List<ParkingOverview> by mutableStateOf(emptyList())
@@ -29,7 +29,7 @@ class ParkingViewModel : ViewModel() {
 
     private suspend fun fetchParkingData() {
         try {
-            val response = RetrofitClient.instance.getParkingSpots()
+            val response = RetrofitClientFile.instance.getParkingSpots()
             parkingSpots = response
         } catch (e: Exception) {
             e.printStackTrace()  // Handle the error appropriately

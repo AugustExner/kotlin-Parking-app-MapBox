@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ParkingOverviewScreen(parkingViewModel: ParkingViewModel = viewModel()) {
+fun ParkingOverviewScreen(parkingViewModel: ParkingModel = viewModel()) {
     val parkingSpots = parkingViewModel.parkingSpots
 
     Scaffold(
