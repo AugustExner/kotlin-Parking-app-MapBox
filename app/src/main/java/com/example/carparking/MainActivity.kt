@@ -15,11 +15,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.carparking.Components.FindMyParkingspot
-
-import com.example.carparking.Components.GoToDestination
-
+import com.example.carparking.Components.DestinationSearchBar
 import com.example.carparking.components.MapComponents.MapBoxTest
+import com.example.carparking.components.buttons.FindMyParkingButton
+import com.example.carparking.components.buttons.PrintLocationButton
 import com.example.carparking.ui.theme.CarParkingTheme
 import com.mapbox.android.core.permissions.PermissionsManager
 
@@ -42,9 +41,15 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                     ) { innerPadding ->
-                        // You should apply the innerPadding to the main content
-                        Column(modifier = Modifier.padding(innerPadding).padding(8.dp)) {
+                        // Apply the innerPadding to the main content
+                        Column(modifier = Modifier
+                            .padding(innerPadding)
+                            .padding(8.dp)) {
+
+                            // Manage the input text state here
                             var inputText by remember { mutableStateOf("") }
+
+                            // Display the map and components
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -59,8 +64,12 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 MapBoxTest(context = this@MainActivity)
                             }
-                            GoToDestination(onTextChange = { inputText = it })
-                            FindMyParkingspot(text = inputText)
+                            // Use the search bar to update the input text
+                            DestinationSearchBar(onTextChange = { inputText = it })
+
+                            // Pass the inputText and context to FindMySparkingButton
+                            FindMyParkingButton(text = inputText, context = this@MainActivity)
+
                         }
                     }
                 }
