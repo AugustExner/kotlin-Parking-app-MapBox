@@ -1,4 +1,4 @@
-package com.example.carparking.components.parkingspots
+package com.example.carparking.components1.parkingspots
 
 data class ParkingSpots(
     val parkeringsplads: String,

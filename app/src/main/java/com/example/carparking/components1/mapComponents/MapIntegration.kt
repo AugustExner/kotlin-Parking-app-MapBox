@@ -1,4 +1,4 @@
-package com.example.carparking.components.mapComponents
+package com.example.carparking.components1.mapComponents
 
 import android.content.Context
 import android.util.Log
@@ -11,8 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.carparking.components.parkingoverview.ParkingOverview
-import com.example.carparking.components.parkingoverview.ParkingModel
+import com.example.carparking.components1.parkingoverview.ParkingOverview1
+import com.example.carparking.components1.parkingoverview.ParkingModel1
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -24,7 +24,7 @@ import getUserLocation
 
 
 @Composable
-fun MapsTest(context: Context, parkingViewModel: ParkingModel = viewModel()) {
+fun MapsTest(context: Context, parkingViewModel: ParkingModel1 = viewModel()) {
     var userLocation by remember { mutableStateOf<LatLng?>(null) }
     val parkingSpots = parkingViewModel.parkingSpots
 
@@ -62,7 +62,7 @@ fun MapsTest(context: Context, parkingViewModel: ParkingModel = viewModel()) {
 }
 
 @Composable
-fun CustomMarker(parkingSpot: ParkingOverview) {
+fun CustomMarker(parkingSpot: ParkingOverview1) {
     val markerPositionState = rememberMarkerState(position = LatLng(parkingSpot.latitude.toDouble(), parkingSpot.longitude.toDouble()))
     Marker(
         state = markerPositionState,

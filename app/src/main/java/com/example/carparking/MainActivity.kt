@@ -20,7 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.example.carparking.Components.FindMyParkingspot
 
 import com.example.carparking.Components.GoToDestination
-import com.example.carparking.components.mapComponents.MapBoxTest
+import com.example.carparking.components1.mapComponents.MapBoxTest
+
 import com.example.carparking.ui.theme.CarParkingTheme
 
 class MainActivity : ComponentActivity() {

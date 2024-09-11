@@ -1,7 +1,7 @@
 // In ParkingOverview.kt
-package com.example.carparking.components.parkingoverview
+package com.example.carparking.components1.parkingoverview
 
-data class ParkingOverview(
+data class ParkingOverview1(
     val id: Int,
     val parkeringsplads: String,
     val antalPladser: Int,

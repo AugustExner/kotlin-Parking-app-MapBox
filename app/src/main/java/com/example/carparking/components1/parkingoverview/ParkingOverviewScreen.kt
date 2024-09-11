@@ -1,4 +1,4 @@
-package com.example.carparking.components.parkingoverview
+package com.example.carparking.components1.parkingoverview
 
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ParkingOverviewScreen(parkingViewModel: ParkingModel = viewModel()) {
+fun ParkingOverviewScreen(parkingViewModel: ParkingModel1 = viewModel()) {
     val parkingSpots = parkingViewModel.parkingSpots
 
     Scaffold(
@@ -32,7 +32,7 @@ fun ParkingOverviewScreen(parkingViewModel: ParkingModel = viewModel()) {
 }
 
 @Composable
-fun ParkingSpotItem(spot: ParkingOverview) {
+fun ParkingSpotItem(spot: ParkingOverview1) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

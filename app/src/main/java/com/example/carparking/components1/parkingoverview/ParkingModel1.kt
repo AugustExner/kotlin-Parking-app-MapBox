@@ -1,4 +1,4 @@
-package com.example.carparking.components.parkingspots
+package com.example.carparking.components1.parkingoverview
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,10 +8,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 
-class ParkingViewModel : ViewModel() {
+class ParkingModel1 : ViewModel() {
 
     // Corrected state management
-    var parkingSpots: List<ParkingSpots> by mutableStateOf(emptyList())
+    var parkingSpots: List<ParkingOverview1> by mutableStateOf(emptyList())
         private set
 
     init {
@@ -29,7 +29,7 @@ class ParkingViewModel : ViewModel() {
 
     private suspend fun fetchParkingData() {
         try {
-            val response = RetrofitClient.instance.getParkingSpots()
+            val response = RetrofitClientFile1.instance.getParkingSpots()
             parkingSpots = response
         } catch (e: Exception) {
             e.printStackTrace()  // Handle the error appropriately

@@ -1,4 +1,4 @@
-package com.example.carparking.components.mapComponents
+package com.example.carparking.components1.mapComponents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.carparking.R
-import com.example.carparking.components.parkingoverview.ParkingOverview
+import com.example.carparking.components1.parkingoverview.ParkingOverview1
 
 import com.mapbox.geojson.Point
 import com.mapbox.maps.ViewAnnotationAnchor
@@ -31,7 +31,7 @@ import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 
 @Composable
-fun CustomMapBoxMarker(parkingSpot: ParkingOverview) {
+fun CustomMapBoxMarker(parkingSpot: ParkingOverview1) {
     ViewAnnotation(
         options = viewAnnotationOptions {
             geometry(geometry = Point.fromLngLat(parkingSpot.longitude.toDouble(), parkingSpot.latitude.toDouble()))
@@ -70,7 +70,7 @@ fun CustomMapBoxMarker(parkingSpot: ParkingOverview) {
 @Preview(showBackground = true)
 @Composable
 fun CustomMarkerPreview() {
-    CustomMapBoxMarker(parkingSpot = ParkingOverview(
+    CustomMapBoxMarker(parkingSpot = ParkingOverview1(
         id = 1, parkeringsplads = "Willy Sørensens Plads",
         antalPladser = 100,
         ledigePladser = 69,

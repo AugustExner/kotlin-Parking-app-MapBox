@@ -1,16 +1,16 @@
-package com.example.carparking.components.parkingoverview
+package com.example.carparking.components1.parkingspots
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitClientFile {
+object RetrofitClient {
     private const val BASE_URL = "https://letparkeringapi.azurewebsites.net/"
 
-    val instance: ParkingApiServiceFile by lazy {
+    val instance: ParkingSpotsApiService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(ParkingApiServiceFile::class.java)
+            .create(ParkingSpotsApiService::class.java)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.carparking.components.mapComponents
+package com.example.carparking.components1.mapComponents
 
 import PermissionHandler
 import android.app.Activity
@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.R
-import com.example.carparking.components.parkingoverview.ParkingModel
+import com.example.carparking.components1.parkingoverview.ParkingModel1
 
 import com.mapbox.geojson.Point
 import com.mapbox.maps.extension.compose.MapboxMap
@@ -29,7 +29,7 @@ import com.mapbox.maps.extension.compose.annotation.rememberIconImage
 
 
 @Composable
-fun MapBoxTest(context: Context, parkingViewModel: ParkingModel = viewModel()) {
+fun MapBoxTest(context: Context, parkingViewModel: ParkingModel1 = viewModel()) {
     val parkingSpots = parkingViewModel.parkingSpots
 
     val markerResourceId by remember {
@@ -47,9 +47,7 @@ fun MapBoxTest(context: Context, parkingViewModel: ParkingModel = viewModel()) {
         }
     }
 
-    val mapViewportState = rememberMapViewportState {
-
-    }
+    val mapViewportState = rememberMapViewportState {}
 
     LaunchedEffect(location) {
         location?.let { loc ->
