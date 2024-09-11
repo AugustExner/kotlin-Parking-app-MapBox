@@ -2,8 +2,10 @@
 activityComposeVersion = "1.7.2"
 agp = "8.5.2"
 android = "11.6.0"
+androidAutoComponents = "3.4.0-beta.1"
 autofill = "1.0.0-beta.39"
 converterGson = "2.9.0"
+copilot = "3.4.0-beta.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -18,6 +20,8 @@ mapsCompose = "6.1.1"
 mapsComposeVersion = "11.6.0"
 material = "1.6.8"
 material3 = "1.2.1"
+navigation = "3.4.0-beta.1"
+navigationVersion = "0.43.0-alpha.1"
 playServicesLocation = "21.3.0"
 playServicesMaps = "19.0.0"
 maps = "3.1.0-beta"
@@ -29,6 +33,7 @@ uiToolingPreview = "1.6.8"
 
 [libraries]
 android = { module = "com.mapbox.maps:android", version.ref = "android" }
+android-auto-components = { module = "com.mapbox.navigation:android-auto-components", version.ref = "androidAutoComponents" }
 androidx-activity-compose-v172 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
@@ -36,6 +41,7 @@ androidx-material = { module = "androidx.compose.material:material", version.ref
 androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedata" }
 autofill = { module = "com.mapbox.search:autofill", version.ref = "autofill" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+copilot = { module = "com.mapbox.navigationcore:copilot", version.ref = "copilot" }
 extension-maps-compose = { module = "com.mapbox.extension:maps-compose", version.ref = "mapsComposeVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -54,13 +60,20 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+navigation = { module = "com.mapbox.navigationcore:navigation", version.ref = "navigation" }
+navigation-v0430alpha1 = { module = "com.mapbox.navigationcore:navigation", version.ref = "navigationVersion" }
+navigationcore-android = { module = "com.mapbox.navigationcore:android", version.ref = "copilot" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 maps = { group = "com.google.android.libraries.maps", name = "maps", version.ref = "maps" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+tripdata = { module = "com.mapbox.navigationcore:tripdata", version.ref = "copilot" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
+ui-components = { module = "com.mapbox.navigationcore:ui-components", version.ref = "copilot" }
+ui-maps = { module = "com.mapbox.navigationcore:ui-maps", version.ref = "copilot" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
+voice = { module = "com.mapbox.navigationcore:voice", version.ref = "copilot" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

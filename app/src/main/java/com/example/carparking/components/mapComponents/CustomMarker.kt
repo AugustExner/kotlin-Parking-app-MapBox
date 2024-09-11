@@ -1,4 +1,4 @@
-package com.example.carparking.components.MapComponents
+package com.example.carparking.components.mapComponents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

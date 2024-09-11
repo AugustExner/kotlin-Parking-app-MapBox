@@ -1,4 +1,4 @@
-package com.example.carparking.components.MapComponents
+package com.example.carparking.components.mapComponents
 
 import android.content.Context
 import android.util.Log

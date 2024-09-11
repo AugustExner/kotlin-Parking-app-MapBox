@@ -75,7 +75,6 @@ dependencies {
     implementation(libs.maps.compose)
     implementation(libs.play.services.location)
 
-
     // Compose BOM (Bill of Materials) for version management
     implementation(platform(libs.androidx.compose.bom))
 
@@ -110,4 +109,18 @@ dependencies {
     implementation(libs.android)
     // If you're using compose also add the compose extension
     implementation(libs.extension.maps.compose)
+
+    implementation(libs.navigation)
+    implementation(libs.copilot)
+    implementation(libs.ui.maps)
+    implementation(libs.voice)
+    implementation(libs.tripdata)
+    implementation(libs.navigationcore.android)
+    implementation(libs.ui.components)
+
+    //implementation(libs.android.auto.components)
+
+    implementation(libs.navigation.v0430alpha1)
+
+
 }

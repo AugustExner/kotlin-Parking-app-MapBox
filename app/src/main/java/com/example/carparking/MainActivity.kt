@@ -1,6 +1,7 @@
 package com.example.carparking
 
 import PermissionHandler
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,15 +14,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.carparking.Components.FindMyParkingspot
 
 import com.example.carparking.Components.GoToDestination
-
-import com.example.carparking.components.MapComponents.MapBoxTest
+import com.example.carparking.components.mapComponents.MapBoxTest
 import com.example.carparking.ui.theme.CarParkingTheme
-import com.mapbox.android.core.permissions.PermissionsManager
 
 class MainActivity : ComponentActivity() {
 
@@ -43,7 +43,9 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                     ) { innerPadding ->
                         // You should apply the innerPadding to the main content
-                        Column(modifier = Modifier.padding(innerPadding).padding(8.dp)) {
+                        Column(modifier = Modifier
+                            .padding(innerPadding)
+                            .padding(8.dp)) {
                             var inputText by remember { mutableStateOf("") }
                             Box(
                                 modifier = Modifier
@@ -61,10 +63,25 @@ class MainActivity : ComponentActivity() {
                             }
                             GoToDestination(onTextChange = { inputText = it })
                             FindMyParkingspot(text = inputText)
+                            StartButton()
                         }
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    fun StartButton() {
+        val context = LocalContext.current
+        Button(
+            onClick = {
+                val intent = Intent(context, NavigationActivity::class.java)
+                context.startActivity(intent)
+            },
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text(text = "Start Navigation Activity")
         }
     }
 
