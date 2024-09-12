@@ -20,7 +20,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
-import getUserLocation
+import com.example.carparking.components1.navigation.getUserLocation
 
 
 @Composable

@@ -1,9 +1,11 @@
+package com.example.carparking.components1.navigation
+
+import PermissionHandler
 import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationObserver
-import com.mapbox.common.location.Location as MapboxLocation
 
 class MyMapboxNavigationObserver(
     private val context: Context,

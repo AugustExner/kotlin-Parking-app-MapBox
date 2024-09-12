@@ -1,6 +1,8 @@
 package com.example.carparking
 
 import android.app.Application
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.mapbox.navigation.base.options.NavigationOptions
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 

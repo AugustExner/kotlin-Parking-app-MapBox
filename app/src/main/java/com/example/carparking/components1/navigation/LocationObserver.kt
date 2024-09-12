@@ -1,3 +1,5 @@
+package com.example.carparking.components1.navigation
+
 import android.util.Log
 import com.mapbox.common.location.Location as MapboxLocation
 import com.mapbox.navigation.core.trip.session.LocationMatcherResult

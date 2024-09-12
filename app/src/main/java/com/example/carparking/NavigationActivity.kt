@@ -1,7 +1,7 @@
 package com.example.carparking
 
-import MyLocationObserver
-import MyMapboxNavigationObserver
+import com.example.carparking.components1.navigation.MyLocationObserver
+import com.example.carparking.components1.navigation.MyMapboxNavigationObserver
 import PermissionHandler
 import android.content.ContentValues.TAG
 import android.os.Bundle
@@ -11,7 +11,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -24,18 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.example.carparking.components1.navigation.setupMapboxNavigation
 import com.example.carparking.ui.theme.CarParkingTheme
 import com.mapbox.api.directions.v5.models.RouteOptions
-import com.mapbox.bindgen.ExpectedFactory
-import com.mapbox.common.location.DeviceLocationProviderFactory
 import com.mapbox.geojson.Point
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
 import com.mapbox.maps.extension.compose.annotation.rememberIconImage
 import com.mapbox.navigation.base.extensions.applyDefaultNavigationOptions
-import com.mapbox.navigation.base.options.LocationOptions
-import com.mapbox.navigation.base.options.NavigationOptions
 import com.mapbox.navigation.base.route.NavigationRoute
 import com.mapbox.navigation.base.route.NavigationRouterCallback
 import com.mapbox.navigation.base.route.RouterFailure

@@ -1,4 +1,4 @@
-package com.example.carparking
+package com.example.carparking.components1.navigation
 
 import android.app.PendingIntent
 import android.content.Context
@@ -14,9 +14,7 @@ import com.mapbox.common.location.LocationProvider
 import com.mapbox.common.location.LocationProviderRequest
 import com.mapbox.navigation.base.options.LocationOptions
 import com.mapbox.navigation.base.options.NavigationOptions
-import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
-import kotlinx.coroutines.CoroutineStart
 
 
 class MyLocationProvider(private val request: LocationProviderRequest) : LocationProvider, DeviceLocationProvider {
