@@ -110,4 +110,6 @@ dependencies {
     implementation(libs.android)
     // If you're using compose also add the compose extension
     implementation(libs.extension.maps.compose)
+
+    implementation (libs.androidx.navigation.compose)
 }

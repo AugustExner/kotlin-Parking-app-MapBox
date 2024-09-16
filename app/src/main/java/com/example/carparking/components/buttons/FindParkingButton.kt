@@ -28,9 +28,10 @@ fun printUserRoute(context: Context, text: String) {
 
 // The button composable that triggers the printUserRoute function
 @Composable
-fun FindMyParkingButton(text: String, context: Context) {
+fun FindMyParkingButton(text: String, context: Context, onButtonClick: () -> Unit = {}) {
     Button(
         onClick = {
+            onButtonClick()
             printUserRoute(
                 context = context,
                 text = text
@@ -43,5 +44,6 @@ fun FindMyParkingButton(text: String, context: Context) {
             .height(60.dp),
     ) {
         Text("Find parking!", fontSize = 24.sp)
+
     }
 }

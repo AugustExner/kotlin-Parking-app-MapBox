@@ -54,7 +54,6 @@ fun MapsTest(context: Context, parkingViewModel: ParkingViewModel = viewModel())
             )
 
             parkingSpots.map {
-
                 CustomMarker(parkingSpot = it)
             }
         }
