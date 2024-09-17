@@ -51,77 +51,64 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose) // Keep this one
-
+    // Core Android dependencies
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+
+    // Jetpack Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.play.services.maps)
-    //implementation(libs.maps)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Material Design
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material)
+
+    // Google Play Services and Maps
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
     implementation(libs.maps.compose)
-    implementation(libs.play.services.location)
+    implementation(libs.extension.maps.compose)
 
-    // Compose BOM (Bill of Materials) for version management
-    implementation(platform(libs.androidx.compose.bom))
-
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.play.services.maps)
-    implementation(libs.play.services.location)
-
-    // Testing libraries
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
-    // Retrofit and Coroutines
+    // Retrofit for Networking
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+
+    // Kotlin Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
-    // Additional Compose utilities and extensions
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.runtime.livedata)
-    implementation(libs.androidx.material)
-    implementation(libs.ui.tooling)
+    // Testing
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
 
-    implementation(libs.android)
-    // If you're using compose also add the compose extension
-    implementation(libs.extension.maps.compose)
-
+    // Navigation and other utilities
     implementation(libs.navigation)
-    implementation(libs.copilot)
     implementation(libs.ui.maps)
+    implementation(libs.ui.components)
     implementation(libs.voice)
     implementation(libs.tripdata)
-    implementation(libs.navigationcore.android)
-    implementation(libs.ui.components)
 
-    //implementation(libs.android.auto.components)
+    // Mapbox Maps SDK
+    implementation(libs.android) // Replace with the latest version
 
-    implementation(libs.navigation.v0430alpha1)
+    // Compose UI
+    implementation(libs.androidx.ui.v171) // Replace with the latest version
+    implementation(libs.androidx.material.v171) // Replace with the latest version
 
+    // Other dependencies (if needed)
+    implementation(libs.androidx.lifecycle.runtime.ktx) // for lifecycle
+    implementation(libs.androidx.activity.compose) // for activity-compose integration
 
-
+    // Optional libraries (commented for now)
+    // implementation(libs.android.auto.components)
+    // implementation(libs.navigation.v0430alpha1)
 }

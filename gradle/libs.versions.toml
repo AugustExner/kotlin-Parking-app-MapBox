@@ -6,6 +6,7 @@ androidAutoComponents = "3.4.0-beta.1"
 autofill = "1.0.0-beta.39"
 converterGson = "2.9.0"
 copilot = "3.4.0-beta.1"
+core = "2.8.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -20,6 +21,7 @@ mapsCompose = "6.1.1"
 mapsComposeVersion = "11.6.0"
 material = "1.6.8"
 material3 = "1.2.1"
+materialVersion = "1.7.1"
 navigation = "3.4.0-beta.1"
 navigationVersion = "0.43.0-alpha.1"
 playServicesLocation = "21.3.0"
@@ -28,8 +30,10 @@ maps = "3.1.0-beta"
 retrofit = "2.9.0"
 runtimeLivedata = "1.6.8"
 ui = "1.6.8"
+uiManeuver = "2.0.0"
 uiTooling = "1.6.8"
 uiToolingPreview = "1.6.8"
+uiVersion = "1.7.1"
 
 [libraries]
 android = { module = "com.mapbox.maps:android", version.ref = "android" }
@@ -38,10 +42,13 @@ androidx-activity-compose-v172 = { module = "androidx.activity:activity-compose"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
+androidx-material-v171 = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
 androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedata" }
+androidx-ui-v171 = { module = "androidx.compose.ui:ui", version.ref = "uiVersion" }
 autofill = { module = "com.mapbox.search:autofill", version.ref = "autofill" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 copilot = { module = "com.mapbox.navigationcore:copilot", version.ref = "copilot" }
+core = { module = "com.mapbox.navigation:core", version.ref = "core" }
 extension-maps-compose = { module = "com.mapbox.extension:maps-compose", version.ref = "mapsComposeVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -70,6 +77,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 tripdata = { module = "com.mapbox.navigationcore:tripdata", version.ref = "copilot" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-components = { module = "com.mapbox.navigationcore:ui-components", version.ref = "copilot" }
+ui-maneuver = { module = "com.mapbox.navigation:ui-maneuver", version.ref = "uiManeuver" }
 ui-maps = { module = "com.mapbox.navigationcore:ui-maps", version.ref = "copilot" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
