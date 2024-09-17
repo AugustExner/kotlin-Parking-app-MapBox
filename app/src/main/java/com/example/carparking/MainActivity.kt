@@ -17,10 +17,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.Components.DestinationSearchBar
-import com.example.carparking.components.MapComponents.MapBoxTest
-import com.example.carparking.components.buttons.FindMyParkingButton
-import com.example.carparking.components.modalBottomSheet.ModalBottomSheetParkingSpots
-import com.example.carparking.components.parkingspots.ParkingViewModel
+import com.example.carparking.components1.MapComponents.MapBoxTest
+import com.example.carparking.components1.buttons.FindMyParkingButton
+import com.example.carparking.components1.modalBottomSheet.ModalBottomSheetParkingSpots
+import com.example.carparking.components1.parkingspots.ParkingViewModel
 import com.example.carparking.ui.theme.CarParkingTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
     fun MainContent(parkingViewModel: ParkingViewModel = viewModel()) {
         var showBottomSheet by remember { mutableStateOf(false) }  // Control for showing the bottom sheet
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
-
+        var inputText by remember { mutableStateOf("") }  // State for storing the search input
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -96,6 +96,7 @@ class MainActivity : ComponentActivity() {
                     ModalBottomSheetParkingSpots(
                         sheetState = sheetState,
                         onDismissRequest = { showBottomSheet = false },
+                        searchQuery = inputText  // Pass the input text (destination) to the bottom sheet
                     )
                 }
             }

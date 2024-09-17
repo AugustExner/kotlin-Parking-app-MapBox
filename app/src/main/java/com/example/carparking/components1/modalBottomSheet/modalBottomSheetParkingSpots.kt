@@ -1,6 +1,5 @@
-package com.example.carparking.components.modalBottomSheet
+package com.example.carparking.components1.modalBottomSheet
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,17 +17,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.carparking.components.parkingoverview.ParkingViewModel
+import com.example.carparking.components1.parkingoverview.ParkingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModalBottomSheetParkingSpots(
     sheetState: androidx.compose.material3.SheetState,
     onDismissRequest: () -> Unit,
-    parkingViewModel: ParkingViewModel = viewModel()
+    parkingViewModel: ParkingViewModel = viewModel(),
+    searchQuery: String,  // Accept the search query as a parameter
 ) {
     val parkingSpots = parkingViewModel.parkingSpots.sortedByDescending { it.ledigePladser }
-
     ModalBottomSheet(
         modifier = Modifier.fillMaxHeight(),
         sheetState = sheetState,
@@ -54,6 +53,9 @@ fun ModalBottomSheetParkingSpots(
                         .padding(16.dp)
                 ) {
                     Column(modifier = Modifier.padding(8.dp)) { // Wrap the Text in a Column for padding
+                        Text(
+                            text = "searchQuery: $searchQuery",
+                        )
                         Text(
                             text = it.parkeringsplads,
                         )
