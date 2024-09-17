@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -111,12 +112,40 @@ class NavigationActivity : ComponentActivity() {
 
                     setContent {
                         CarParkingTheme {
+                            var maneuverText by remember { mutableStateOf("") }
+                            var distanceText by remember { mutableStateOf("") }
+                            var durationText by remember { mutableStateOf("") }
+
                             Scaffold(modifier = Modifier
                                 .fillMaxSize()
                                 .systemBarsPadding()) { innerPadding ->
                                 Box(modifier = Modifier.padding(innerPadding)) {
-                                    Card() {
-                                        LocationMapDisplay(mapboxNavigation = mapboxNavigation, destination = destination, maneuverApi = maneuverApi)
+                                    LocationMapDisplay(
+                                        mapboxNavigation = mapboxNavigation,
+                                        destination = destination,
+                                        maneuverApi = maneuverApi,
+                                        onManeuverUpdate = { maneuver ->
+                                            maneuverText = maneuver
+                                        },
+                                        onDistanceUpdate = { distance ->
+                                            distanceText = distance
+                                        },
+                                        onDurationUpdate = { duration ->
+                                            durationText = duration
+                                        }
+                                    )
+
+                                    // Display the maneuver card with the latest maneuverText
+                                    Column {
+                                        if (maneuverText.isNotEmpty()) {
+                                            ManeuverDisplay(maneuverText)
+                                        }
+                                        if (distanceText.isNotEmpty()) {
+                                            Text(text = distanceText, modifier = Modifier.padding(16.dp))
+                                        }
+                                        if (durationText.isNotEmpty()) {
+                                            Text(text = durationText, modifier = Modifier.padding(16.dp))
+                                        }
                                     }
                                 }
                             }
@@ -139,10 +168,16 @@ class NavigationActivity : ComponentActivity() {
 }
 
 @Composable
-fun LocationMapDisplay(mapboxNavigation: MapboxNavigation, destination: Point, maneuverApi: MapboxManeuverApi) {
+fun LocationMapDisplay(
+    mapboxNavigation: MapboxNavigation,
+    destination: Point,
+    maneuverApi: MapboxManeuverApi,
+    onManeuverUpdate: (String) -> Unit,  // Callback for sending maneuver text back to parent
+    onDistanceUpdate: (String) -> Unit,  // Callback for sending distance information
+    onDurationUpdate: (String) -> Unit    // Callback for sending duration information
+) {
     val mapViewportState = rememberMapViewportState()
     var location by remember { mutableStateOf<com.mapbox.common.location.Location?>(null) }
-    var maneuverText by remember { mutableStateOf("") }
 
     // Create an instance of MyLocationObserver
     val locationObserver = remember {
@@ -159,7 +194,7 @@ fun LocationMapDisplay(mapboxNavigation: MapboxNavigation, destination: Point, m
         }
     }
 
-    // RouteProgressObserver for maneuvers
+    // RouteProgressObserver for maneuvers and other metrics
     val routeProgressObserver = remember {
         RouteProgressObserver { routeProgress ->
             val maneuvers = maneuverApi.getManeuvers(routeProgress)
@@ -169,13 +204,22 @@ fun LocationMapDisplay(mapboxNavigation: MapboxNavigation, destination: Point, m
                     Log.e(TAG, "Error getting maneuvers: ${error.errorMessage}")
                 },
                 { maneuverList ->
-                    maneuverList.let {
-                        val primaryManeuver: PrimaryManeuver = it.firstOrNull()?.primary ?: return@fold
-                        maneuverText = primaryManeuver.text
-                        Log.v("COMPONENT", "${primaryManeuver.modifier.toString()} | ${primaryManeuver.degrees} | ${primaryManeuver.drivingSide} | ${primaryManeuver.id} | ${primaryManeuver.type}")
-                    }
+                    val primaryManeuver: PrimaryManeuver = maneuverList.firstOrNull()?.primary ?: return@fold
+                    onManeuverUpdate(primaryManeuver.text)  // Send maneuver text to parent via callback
                 }
             )
+
+            // Extract distance and duration information
+            val distanceToNextManeuver = routeProgress.currentLegProgress?.currentStepProgress?.distanceRemaining
+            val durationToNextManeuver = routeProgress.currentLegProgress?.currentStepProgress?.durationRemaining
+
+            distanceToNextManeuver?.let {
+                onDistanceUpdate("Distance to next maneuver: ${it / 1000} km")  // Convert meters to kilometers
+            }
+
+            durationToNextManeuver?.let {
+                onDurationUpdate("Time to next maneuver: ${it / 60} min")  // Convert seconds to minutes
+            }
         }
     }
 
@@ -190,20 +234,17 @@ fun LocationMapDisplay(mapboxNavigation: MapboxNavigation, destination: Point, m
         }
     }
 
-    // Render the map and maneuver text
+    // Render the map (without the maneuver card here)
     Box(modifier = Modifier.fillMaxSize()) {
-        MapboxMap(modifier = Modifier.fillMaxSize(), mapViewportState = mapViewportState) {
-            // Here we set up the map style or annotations directly if needed.
-            // Example: Adding a marker or changing map style, use the available Mapbox SDK APIs.
-            // You can use MapboxMapScope functions here, e.g., addAnnotation, setCamera, etc.
-        }
-        ManeuverDisplay(maneuverText)
+        MapboxMap(modifier = Modifier.fillMaxSize(), mapViewportState = mapViewportState)
     }
 }
 
+
+
 @Composable
 fun ManeuverDisplay(maneuverText: String) {
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth()) {
         Text(text = maneuverText, modifier = Modifier.padding(16.dp))
     }
 }
