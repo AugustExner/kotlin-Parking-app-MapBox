@@ -1,4 +1,4 @@
-package com.example.carparking.components1.MapComponents
+package com.example.carparking.components.MapComponents
 
 import PermissionHandler
 import android.app.Activity
@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.R
-import com.example.carparking.components1.parkingoverview.ParkingViewModel
+import com.example.carparking.components.parkingoverview.ParkingViewModel
 import com.mapbox.geojson.Point
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState

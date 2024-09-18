@@ -1,4 +1,4 @@
-package com.example.carparking.components1.MapComponents
+package com.example.carparking.components.MapComponents
 
 import PermissionHandler
 import android.app.Activity

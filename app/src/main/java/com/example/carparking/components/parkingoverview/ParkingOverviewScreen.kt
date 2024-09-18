@@ -1,4 +1,4 @@
-package com.example.carparking.components1.parkingoverview
+package com.example.carparking.components.parkingoverview
 
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel

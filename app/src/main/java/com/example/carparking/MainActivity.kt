@@ -17,11 +17,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.Components.DestinationSearchBar
-import com.example.carparking.components1.MapComponents.MapBoxTest
-import com.example.carparking.components1.buttons.FindMyParkingButton
-import com.example.carparking.components1.modalBottomSheet.ModalBottomSheetParkingSpots
-import com.example.carparking.components1.parkingspots.ParkingViewModel
+import com.example.carparking.components.MapComponents.MapBoxTest
+import com.example.carparking.components.buttons.FindMyParkingButton
+import com.example.carparking.components.modalBottomSheet.ModalBottomSheetParkingSpots
+import com.example.carparking.components.parkingspots.ParkingViewModel
 import com.example.carparking.ui.theme.CarParkingTheme
+import com.example.carparking.components.googlemaps.GoogleMapsRetrofitClient
+import com.example.carparking.components.parkingoverview.directionsAPI.DirectionsResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : ComponentActivity() {
 
@@ -87,7 +92,10 @@ class MainActivity : ComponentActivity() {
                 FindMyParkingButton(
                     text = inputText,
                     context = this@MainActivity,
-                    onButtonClick = { showBottomSheet = true }
+                    onButtonClick = {
+                        makeApiCall(inputText)  // Make API call when the button is clicked
+                        showBottomSheet = true
+                    }
                 )
 
                 // Show the PartialBottomSheet when triggered
@@ -101,6 +109,33 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    // Function to make the API call
+    private fun makeApiCall(destination: String) {
+        val origin = "P-husCronhammar Vejle"  // Set a fixed origin or dynamic based on your app
+        val apiKey = "AIzaSyDgORILdn4tqoGRbvGsH3eKXix5LGPldi8"  // Replace with your actual API key
+
+        // Make the API call
+        val call = GoogleMapsRetrofitClient.instance.getDirections(origin, destination, apiKey)
+
+        call.enqueue(object : Callback<DirectionsResponse> {
+            override fun onResponse(call: Call<DirectionsResponse>, response: Response<DirectionsResponse>) {
+                if (response.isSuccessful) {
+                    val directions = response.body()
+                    val distance = directions?.routes?.firstOrNull()?.legs?.firstOrNull()?.distance
+                    distance?.let {
+                        println("Success: Distance - ${it.text} (${it.value} meters)")
+                    }
+                } else {
+                    println("Error: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
+                println("Failure: ${t.message}")
+            }
+        })
     }
 
     @Preview(showBackground = true)

@@ -1,4 +1,4 @@
-package com.example.carparking.components1.parkingoverview
+package com.example.carparking.components.parkingoverview
 
 import retrofit2.http.GET
 
