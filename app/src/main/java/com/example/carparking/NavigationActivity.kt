@@ -35,10 +35,13 @@ import com.example.carparking.components1.navigation.MyLocationObserver
 import com.example.carparking.components1.navigation.MyMapboxNavigationObserver
 import com.example.carparking.components1.navigation.setupMapboxNavigation
 import com.example.carparking.ui.theme.CarParkingTheme
+import com.mapbox.api.directions.v5.models.LegStep
 import com.mapbox.api.directions.v5.models.RouteOptions
 import com.mapbox.geojson.Point
+import com.mapbox.geojson.utils.PolylineUtils
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
+import com.mapbox.maps.extension.style.expressions.dsl.generated.lineProgress
 import com.mapbox.navigation.base.extensions.applyDefaultNavigationOptions
 import com.mapbox.navigation.base.formatter.DistanceFormatterOptions
 import com.mapbox.navigation.base.route.NavigationRoute
@@ -64,7 +67,6 @@ class NavigationActivity : ComponentActivity() {
     private lateinit var maneuverApi: MapboxManeuverApi
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.v(TAG, "Activity Created")
@@ -73,7 +75,7 @@ class NavigationActivity : ComponentActivity() {
         permissionHandler = PermissionHandler(this)
 
         // Define your destination
-        val destination = Point.fromLngLat(10.189440, 56.171080)
+        val destination = Point.fromLngLat(10.197880, 56.153940)
 
         setupMapboxNavigation(this)
 
@@ -89,11 +91,12 @@ class NavigationActivity : ComponentActivity() {
                     Log.v(TAG, "MapboxNavigation instance is available")
 
                     // Create DistanceFormatterOptions from MapboxNavigation's options
-                    val distanceFormatterOptions = DistanceFormatterOptions.Builder(this@NavigationActivity)
-                        .unitType(mapboxNavigation.navigationOptions.distanceFormatterOptions.unitType)
-                        .roundingIncrement(mapboxNavigation.navigationOptions.distanceFormatterOptions.roundingIncrement)
-                        .locale(mapboxNavigation.navigationOptions.distanceFormatterOptions.locale)
-                        .build()
+                    val distanceFormatterOptions =
+                        DistanceFormatterOptions.Builder(this@NavigationActivity)
+                            .unitType(mapboxNavigation.navigationOptions.distanceFormatterOptions.unitType)
+                            .roundingIncrement(mapboxNavigation.navigationOptions.distanceFormatterOptions.roundingIncrement)
+                            .locale(mapboxNavigation.navigationOptions.distanceFormatterOptions.locale)
+                            .build()
 
                     // Initialize the DistanceFormatter
                     val distanceFormatter = MapboxDistanceFormatter(distanceFormatterOptions)
@@ -128,9 +131,11 @@ class NavigationActivity : ComponentActivity() {
                             var distanceToTurnInt by remember { mutableStateOf(0) }
 
 
-                            Scaffold(modifier = Modifier
-                                .fillMaxSize()
-                                .systemBarsPadding()) { innerPadding ->
+                            Scaffold(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .systemBarsPadding()
+                            ) { innerPadding ->
                                 Box(modifier = Modifier.padding(innerPadding)) {
                                     LocationMapDisplay(
                                         mapboxNavigation = mapboxNavigation,
@@ -159,15 +164,15 @@ class NavigationActivity : ComponentActivity() {
                                     )
 
 
-                                        if (maneuverText.isNotEmpty()) {
-                                            ManeuverDisplay(
-                                                maneuverText,
-                                                directionText,
-                                                instructionText,
-                                                durationInt,
-                                                distanceToTurnInt
-                                            )
-                                        }
+                                    if (maneuverText.isNotEmpty()) {
+                                        ManeuverDisplay(
+                                            maneuverText,
+                                            directionText,
+                                            instructionText,
+                                            durationInt,
+                                            distanceToTurnInt
+                                        )
+                                    }
 
                                 }
                             }
@@ -199,7 +204,7 @@ fun LocationMapDisplay(
     onDurationUpdate: (Int) -> Unit,    // Callback for sending duration information
     onNextStepInstruction: (String) -> Unit,
     onNextDirection: (String) -> Unit,
-    onDistanceRemainingBeforeTurn: (Int) -> Unit
+    onDistanceRemainingBeforeTurn: (Int) -> Unit,
 ) {
     val mapViewportState = rememberMapViewportState()
     var location by remember { mutableStateOf<com.mapbox.common.location.Location?>(null) }
@@ -214,7 +219,11 @@ fun LocationMapDisplay(
                     zoom(12.0)
                 }
                 // Request a route to the destination
-                requestRoute(mapboxNavigation, Point.fromLngLat(loc.longitude, loc.latitude), destination)
+                requestRoute(
+                    mapboxNavigation,
+                    Point.fromLngLat(loc.longitude, loc.latitude),
+                    destination
+                )
             }
         }
     }
@@ -229,18 +238,21 @@ fun LocationMapDisplay(
                     Log.e(TAG, "Error getting maneuvers: ${error.errorMessage}")
                 },
                 { maneuverList ->
-                    val primaryManeuver: PrimaryManeuver = maneuverList.firstOrNull()?.primary ?: return@fold
+                    val primaryManeuver: PrimaryManeuver =
+                        maneuverList.firstOrNull()?.primary ?: return@fold
                     onManeuverUpdate(primaryManeuver.text)  // Send maneuver text to parent via callback
                 }
             )
 
             // Extract distance and duration information
-            val distanceToNextManeuver = routeProgress.currentLegProgress?.currentStepProgress?.distanceRemaining
+            val distanceToNextManeuver =
+                routeProgress.currentLegProgress?.currentStepProgress?.distanceRemaining
             val distanceRemaining = routeProgress.currentLegProgress?.distanceRemaining
             val durationRemaining = routeProgress.durationRemaining
             val nextManeuverDirection = routeProgress.currentLegProgress?.upcomingStep
             val currentStepProgress = routeProgress.currentLegProgress?.currentStepProgress
-            val distanceRemainingBeforeTurn = routeProgress.currentLegProgress?.currentStepProgress?.distanceRemaining
+            val distanceRemainingBeforeTurn =
+                routeProgress.currentLegProgress?.currentStepProgress?.distanceRemaining
 
 
 
@@ -258,12 +270,14 @@ fun LocationMapDisplay(
             }
 
             distanceToNextManeuver?.let {
-                if(it >= 1000) {
+                if (it >= 1000) {
                     onDistanceUpdate("${(it / 1000).toInt()} km")  // Convert meters to kilometers
                 } else {
                     onDistanceUpdate("${it.toInt()} m")
                 }
             }
+
+            Log.v("TEST", routeProgress.route.geometry().toString())
 
         }
     }
@@ -279,24 +293,37 @@ fun LocationMapDisplay(
         }
     }
 
+
     // Render the map (without the maneuver card here)
     Box(modifier = Modifier.fillMaxSize()) {
-        MapboxMap(modifier = Modifier.fillMaxSize(), mapViewportState = mapViewportState) {
-
-        }
+        MapboxMap(
+            modifier = Modifier.fillMaxSize(),
+            mapViewportState = mapViewportState,
+        )
     }
 }
 
+fun decodePolyline(geometry: String): List<Point> {
+    return PolylineUtils.decode(geometry, 6) // 6 is precision for mapbox geometries
+}
 
 
 @Composable
-fun ManeuverDisplay(maneuverText: String, maneuverDirection: String, maneuverInstruction: String, maneuverDuration: Int, maneuverDistanceToTurn: Int) {
+fun ManeuverDisplay(
+    maneuverText: String,
+    maneuverDirection: String,
+    maneuverInstruction: String,
+    maneuverDuration: Int,
+    maneuverDistanceToTurn: Int
+) {
     val timeETA = LocalTime.now().plusSeconds(maneuverDuration.toLong())
     val formatter = DateTimeFormatter.ofPattern("HH.mm")
 
 
 
-    Card(modifier = Modifier.fillMaxWidth().height(200.dp)) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .height(200.dp)) {
         Row() {
             //Image(painter = painterResource(
             //    id = R.drawable.parking_icon),
