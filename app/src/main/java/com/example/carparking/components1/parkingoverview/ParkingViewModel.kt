@@ -1,4 +1,4 @@
-package com.example.carparking.components.parkingspots
+package com.example.carparking.components1.parkingoverview
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,7 +11,7 @@ import kotlinx.coroutines.delay
 class ParkingViewModel : ViewModel() {
 
     // Corrected state management
-    var parkingSpots: List<ParkingSpots> by mutableStateOf(emptyList())
+    var parkingSpots: List<ParkingOverview> by mutableStateOf(emptyList())
         private set
 
     init {

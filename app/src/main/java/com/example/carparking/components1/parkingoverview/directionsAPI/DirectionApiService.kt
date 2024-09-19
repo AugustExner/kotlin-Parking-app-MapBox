@@ -1,5 +1,5 @@
 
-import com.example.carparking.components.parkingoverview.directionsAPI.DirectionsResponse
+import com.example.carparking.components1.parkingoverview.directionsAPI.DirectionsResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

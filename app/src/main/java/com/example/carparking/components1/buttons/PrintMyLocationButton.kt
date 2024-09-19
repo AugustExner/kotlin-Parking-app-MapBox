@@ -1,11 +1,11 @@
-package com.example.carparking.components.buttons
+package com.example.carparking.components1.buttons
 
 import android.util.Log
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import com.example.carparking.components.MapComponents.LocationHelper
+import com.example.carparking.components1.MapComponents.LocationHelper
 
 @Composable
 fun PrintLocationButton() {

@@ -1,4 +1,4 @@
-package com.example.carparking.components.modalBottomSheet
+package com.example.carparking.components1.modalBottomSheet
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,10 +14,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.carparking.components.parkingoverview.ParkingViewModel
+import com.example.carparking.components1.parkingoverview.ParkingViewModel
+import com.example.carparking.components1.parkingoverview.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,6 +30,7 @@ fun ModalBottomSheetParkingSpots(
     parkingViewModel: ParkingViewModel = viewModel(),
     searchQuery: String,  // Accept the search query as a parameter
 ) {
+    //Sorting the parking spots by the number of available parking spots
     val parkingSpots = parkingViewModel.parkingSpots.sortedByDescending { it.ledigePladser }
     ModalBottomSheet(
         modifier = Modifier.fillMaxHeight(),
@@ -46,6 +50,16 @@ fun ModalBottomSheetParkingSpots(
             )
 
             parkingSpots.map {
+                val remainingDistance = remember { mutableStateOf(0) }
+                makeApiCallTestWithOriginAndDestinationParameter(
+                    it.latitude,
+                    it.longitude,
+                    searchQuery,
+                ) { distance ->
+                    remainingDistance.value = distance // Update the state when distance is fetched
+                }
+
+
                 Card(
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
@@ -53,18 +67,11 @@ fun ModalBottomSheetParkingSpots(
                         .padding(16.dp)
                 ) {
                     Column(modifier = Modifier.padding(8.dp)) { // Wrap the Text in a Column for padding
-                        Text(
-                            text = "searchQuery: $searchQuery",
-                        )
-                        Text(
-                            text = it.parkeringsplads,
-                        )
-                        Text(
-                            text = "Frie Pladser: " + it.ledigePladser.toString(),
-                        )
-                        Text(
-                            text = "Antal Pladser: " + it.antalPladser.toString(),
-                        )
+                        Text(text = "Destination: $searchQuery")
+                        Text(text = "Distance from parking: ${remainingDistance.value} meters")  // Display the distance
+                        Text(text = it.parkeringsplads)
+                        Text(text = "Frie Pladser: " + it.ledigePladser.toString())
+                        Text(text = "Antal Pladser: " + it.antalPladser.toString())
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp)) // Add space between cards

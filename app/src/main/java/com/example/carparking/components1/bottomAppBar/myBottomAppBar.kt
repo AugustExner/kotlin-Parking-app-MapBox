@@ -1,4 +1,4 @@
-package com.example.carparking.components.bottomAppBar
+package com.example.carparking.components1.bottomAppBar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer

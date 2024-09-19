@@ -1,4 +1,4 @@
-package com.example.carparking.components.MapComponents
+package com.example.carparking.components1.MapComponents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.carparking.R
-import com.example.carparking.components.parkingoverview.ParkingOverview
+import com.example.carparking.components1.parkingoverview.ParkingOverview
 import com.mapbox.geojson.Point
 import com.mapbox.maps.ViewAnnotationAnchor
 import com.mapbox.maps.extension.compose.annotation.ViewAnnotation

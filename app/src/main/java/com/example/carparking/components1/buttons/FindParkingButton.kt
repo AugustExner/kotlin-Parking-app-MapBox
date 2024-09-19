@@ -1,4 +1,4 @@
-package com.example.carparking.components.buttons
+package com.example.carparking.components1.buttons
 
 import android.content.Context
 import android.util.Log
@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.carparking.components.MapComponents.LocationHelper
+import com.example.carparking.components1.MapComponents.LocationHelper
 
 // Helper function to print the user's location and destination
 fun printUserRoute(context: Context, text: String) {
