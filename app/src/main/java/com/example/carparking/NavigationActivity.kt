@@ -39,9 +39,15 @@ import com.mapbox.api.directions.v5.models.LegStep
 import com.mapbox.api.directions.v5.models.RouteOptions
 import com.mapbox.geojson.Point
 import com.mapbox.geojson.utils.PolylineUtils
+import com.mapbox.maps.MapView
+import com.mapbox.maps.extension.compose.MapState
 import com.mapbox.maps.extension.compose.MapboxMap
+import com.mapbox.maps.extension.compose.MapboxMapScope
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
+import com.mapbox.maps.extension.compose.ornaments.compass.MapCompassScope
+import com.mapbox.maps.extension.compose.style.standard.MapboxStandardStyle
 import com.mapbox.maps.extension.style.expressions.dsl.generated.lineProgress
+import com.mapbox.maps.plugin.Plugin
 import com.mapbox.navigation.base.extensions.applyDefaultNavigationOptions
 import com.mapbox.navigation.base.formatter.DistanceFormatterOptions
 import com.mapbox.navigation.base.route.NavigationRoute
@@ -54,10 +60,11 @@ import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.mapbox.navigation.core.trip.session.RouteProgressObserver
 import com.mapbox.navigation.tripdata.maneuver.api.MapboxManeuverApi
 import com.mapbox.navigation.tripdata.maneuver.model.PrimaryManeuver
+import com.mapbox.navigation.ui.maps.route.line.api.MapboxRouteLineApi
+import com.mapbox.navigation.ui.maps.route.line.api.MapboxRouteLineView
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-
 
 class NavigationActivity : ComponentActivity() {
     private lateinit var mapboxNavigationObserver: MyMapboxNavigationObserver
@@ -65,6 +72,12 @@ class NavigationActivity : ComponentActivity() {
 
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var maneuverApi: MapboxManeuverApi
+
+    private lateinit var mapboxNavigation: MapboxNavigation
+    private lateinit var mapView: MapView
+    private var isStyleLoaded = false
+    private lateinit var routeLineApi: MapboxRouteLineApi
+    private lateinit var routeLineView: MapboxRouteLineView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +91,6 @@ class NavigationActivity : ComponentActivity() {
         val destination = Point.fromLngLat(10.197880, 56.153940)
 
         setupMapboxNavigation(this)
-
 
         lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onResume(owner: LifecycleOwner) {
@@ -227,7 +239,7 @@ fun LocationMapDisplay(
             }
         }
     }
-
+    var routeGeometry: String?
     // RouteProgressObserver for maneuvers and other metrics
     val routeProgressObserver = remember {
         RouteProgressObserver { routeProgress ->
@@ -276,7 +288,7 @@ fun LocationMapDisplay(
                     onDistanceUpdate("${it.toInt()} m")
                 }
             }
-
+            routeGeometry = routeProgress.route.geometry()
             Log.v("TEST", routeProgress.route.geometry().toString())
 
         }
@@ -299,6 +311,8 @@ fun LocationMapDisplay(
         MapboxMap(
             modifier = Modifier.fillMaxSize(),
             mapViewportState = mapViewportState,
+            //style = ,
+
         )
     }
 }
