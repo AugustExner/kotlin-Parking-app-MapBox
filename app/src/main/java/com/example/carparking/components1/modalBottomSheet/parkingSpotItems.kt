@@ -40,12 +40,22 @@ import com.example.carparking.components1.parkingoverview.directionsAPI.makeApiC
 @Composable
 fun ParkingSpotItem(spot: ParkingOverview, searchQuery: String) {
     val remainingDistance = remember { mutableIntStateOf(0) }
+    val walkingTimeInMinutes = remember { mutableIntStateOf(0) }
     val context = LocalContext.current
+
+    fun calculateWalkingTime(distance: Int): Int {
+        val walkingSpeed = 1.3889 // meters per second
+        val timeInSeconds = distance / walkingSpeed
+        val timeInMinutes = (timeInSeconds / 60).toInt()
+        return (timeInMinutes)
+    }
 
     makeApiCallTestWithOriginAndDestinationParameter(
         spot.latitude, spot.longitude, searchQuery
     ) { distance ->
         remainingDistance.value = distance
+        walkingTimeInMinutes.value = calculateWalkingTime(distance)
+
     }
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -92,8 +102,9 @@ fun ParkingSpotItem(spot: ParkingOverview, searchQuery: String) {
                     )
                 }
                 Text(
-                    text = "${remainingDistance.value} m", fontSize = 14.sp, color = Color.Gray
+                    text = "${remainingDistance.value} m" + " | " + "${walkingTimeInMinutes.value} min", fontSize = 14.sp, color = Color.Gray
                 )
+
             }
 
             Spacer(modifier = Modifier.height(12.dp))

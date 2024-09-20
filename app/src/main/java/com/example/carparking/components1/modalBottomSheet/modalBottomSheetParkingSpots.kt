@@ -43,13 +43,9 @@ fun ModalBottomSheetParkingSpots(
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-
-
             parkingSpots.forEach { parkingSpot ->
                 ParkingSpotItem(spot = parkingSpot, searchQuery = searchQuery)
             }
         }
     }
 }
-
-

@@ -8,6 +8,7 @@ interface DirectionsApiService {
     @GET("directions/json")
     fun getDirections(
         @Query("origin") origin: String,
+        @Query("mode") mode: String,
         @Query("destination") destination: String,
         @Query("key") apiKey: String
     ): Call<DirectionsResponse>

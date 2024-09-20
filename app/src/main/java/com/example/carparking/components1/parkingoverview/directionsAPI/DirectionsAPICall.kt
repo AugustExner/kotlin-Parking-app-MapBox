@@ -14,9 +14,9 @@ import retrofit2.Response
 ) {
     val origin = "$originLat,$originLng"  // Set a fixed origin or dynamic based on your app
     val apiKey = "AIzaSyDgORILdn4tqoGRbvGsH3eKXix5LGPldi8"  // Replace with your actual API key
-
+    val mode = "walking"  // Replace with the desired mode
     // Make the API call
-    val call = GoogleMapsRetrofitClient.instance.getDirections(origin, destination, apiKey)
+    val call = GoogleMapsRetrofitClient.instance.getDirections(origin, mode, destination, apiKey )
 
     call.enqueue(object : Callback<DirectionsResponse> {
         override fun onResponse(call: Call<DirectionsResponse>, response: Response<DirectionsResponse>) {
