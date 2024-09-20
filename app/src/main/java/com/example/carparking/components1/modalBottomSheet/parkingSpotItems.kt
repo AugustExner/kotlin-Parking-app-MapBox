@@ -114,46 +114,32 @@ fun ParkingSpotItem(spot: ParkingOverview, searchQuery: String) {
                 horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()
             ) {
                 Row {
-                    Icon(
-                        imageVector = Icons.Filled.LocationOn,
-                        contentDescription = "Location Icon",
-                        tint = Color(0xFF0D47A1),
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = searchQuery.replaceFirstChar { it.uppercase() },
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-                Text(
-                    text = "${remainingDistance.value} m" + " | " + "${walkingTimeInMinutes.value} min",
-                    fontSize = 14.sp,
-                    color = Color.Gray
-                )
-
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Parking spot info
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()
-            ) {
-                Row {
                     Image(
                         painter = painterResource(id = R.drawable.parking_icon),
                         contentDescription = "Parking Icon",
                         modifier = Modifier.size(20.dp)
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = spot.parkeringsplads,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
+
+
             }
+            Row (horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = "${remainingDistance.value} m" + " | " + "${walkingTimeInMinutes.value} min",
+                    fontSize = 14.sp,
+                    color = Color.Gray
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Parking spot info
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
