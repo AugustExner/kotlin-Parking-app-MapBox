@@ -31,7 +31,7 @@ fun ModalBottomSheetParkingSpots(
     searchQuery: String,
 ) {
     val parkingSpots = parkingViewModel.parkingSpots.sortedByDescending { it.ledigePladser }
-
+    val finalDestination = searchQuery
     ModalBottomSheet(
         modifier = Modifier.fillMaxHeight(),
         sheetState = sheetState,
@@ -43,6 +43,23 @@ fun ModalBottomSheetParkingSpots(
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
+            Row (horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
+
+                Text(
+                    text = searchQuery.replaceFirstChar { it.uppercase() },
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Icon(
+                    imageVector = Icons.Filled.LocationOn,
+                    contentDescription = "Location Icon",
+                    tint = Color(0xFF0D47A1),
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+
+
             parkingSpots.forEach { parkingSpot ->
                 ParkingSpotItem(spot = parkingSpot, searchQuery = searchQuery)
             }
