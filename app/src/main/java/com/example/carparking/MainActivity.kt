@@ -1,10 +1,13 @@
 package com.example.carparking
 
+import NotificationHandler
 import PermissionHandler
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +23,7 @@ import com.example.carparking.Components.DestinationSearchBar
 import com.example.carparking.components1.MapComponents.MapBoxTest
 import com.example.carparking.components1.buttons.FindMyParkingButton
 import com.example.carparking.components1.modalBottomSheet.ModalBottomSheetParkingSpots
+
 import com.example.carparking.components1.parkingspots.ParkingViewModel
 import com.example.carparking.ui.theme.CarParkingTheme
 
@@ -27,6 +31,7 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var permissionHandler: PermissionHandler
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +46,9 @@ class MainActivity : ComponentActivity() {
                 CarParkingTheme {
                     // Call the main content including the bottom app bar
                     MainContent()
+
                 }
+
             }
         }
     }
@@ -52,6 +59,9 @@ class MainActivity : ComponentActivity() {
         var showBottomSheet by remember { mutableStateOf(false) }  // Control for showing the bottom sheet
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
         var inputText by remember { mutableStateOf("") }  // State for storing the search input
+
+        // Create the NotificationHandler
+        val notificationHandler = NotificationHandler(context = this@MainActivity)
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -90,8 +100,10 @@ class MainActivity : ComponentActivity() {
                     onButtonClick = {
                         //makeApiCall(inputText)  // Make API call when the button is clicked
                         showBottomSheet = true
+
                     }
                 )
+
 
                 // Show the PartialBottomSheet when triggered
                 if (showBottomSheet) {
@@ -99,7 +111,8 @@ class MainActivity : ComponentActivity() {
                     ModalBottomSheetParkingSpots(
                         sheetState = sheetState,
                         onDismissRequest = { showBottomSheet = false },
-                        searchQuery = inputText  // Pass the input text (destination) to the bottom sheet
+                        searchQuery = inputText,  // Pass the input text (destination) to the bottom sheet
+                        notificationHandler = notificationHandler  // Pass NotificationHandler
                     )
                 }
             }

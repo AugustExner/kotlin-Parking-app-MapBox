@@ -116,5 +116,7 @@ dependencies {
 
     implementation (libs.androidx.navigation.compose)
     implementation(libs.accompanist.permissions)
+    implementation (libs.androidx.lifecycle.runtime.compose)
+
 
 }

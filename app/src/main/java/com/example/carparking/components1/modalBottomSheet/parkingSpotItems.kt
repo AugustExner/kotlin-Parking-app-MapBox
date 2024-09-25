@@ -1,5 +1,6 @@
 package com.example.carparking.components1.modalBottomSheet
 
+import NotificationHandler
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -23,7 +24,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,17 +36,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.example.carparking.R
 import com.example.carparking.components1.parkingoverview.ParkingOverview
 import com.example.carparking.components1.parkingoverview.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
 
 
+
 @Composable
-fun ParkingSpotItem(spot: ParkingOverview, searchQuery: String) {
+fun ParkingSpotItem(
+    spot: ParkingOverview,
+    searchQuery: String,
+    notificationHandler: NotificationHandler
+) {
     val remainingDistance = remember { mutableIntStateOf(0) }
     val walkingTimeInMinutes = remember { mutableIntStateOf(0) }
     val availableSpotsInPercentage = remember { mutableIntStateOf(0) }
+    val selectedParkngSpot = remember { mutableStateOf("") }
+    val isGoogleMapsLaunched = remember { mutableStateOf(false) } // Track if Google Maps is launched
     val context = LocalContext.current
+    val lifecycleOwner = LocalContext.current as LifecycleOwner
+
+
 
     fun calculateWalkingTime(distance: Int): Int {
         val walkingSpeed = 1.3889 // meters per second
@@ -57,12 +74,50 @@ fun ParkingSpotItem(spot: ParkingOverview, searchQuery: String) {
         return (result)
     }
 
+    fun checkAndSendNotification() {
+        if (isGoogleMapsLaunched.value && availableSpotsInPercentage.intValue < 10) {
+            notificationHandler.showSimpleNotification(
+                title = "Find new spot",
+                message = "Only ${availableSpotsInPercentage.intValue}% of the spots are available in ${spot.parkeringsplads}"
+            )
+        }
+    }
+
+    // Periodically check availability after Google Maps is launched
+    LaunchedEffect(isGoogleMapsLaunched.value) {
+        if (isGoogleMapsLaunched.value) {
+            while (true) {
+                // Simulate periodic checks (e.g., every 30 seconds)
+                kotlinx.coroutines.delay(30000L)
+                checkAndSendNotification()
+            }
+        }
+    }
+
+
+    // Lifecycle event observer to track when the user returns to the app
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                // When the app is resumed, set Google Maps as not launched
+                isGoogleMapsLaunched.value = false
+            }
+        }
+        // Add the observer to the lifecycle
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        // Cleanup when the composable leaves the composition
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     makeApiCallTestWithOriginAndDestinationParameter(
         spot.latitude, spot.longitude, searchQuery
     ) { distance ->
-        remainingDistance.value = distance
-        walkingTimeInMinutes.value = calculateWalkingTime(distance)
-        availableSpotsInPercentage.value = calculateAvailableSpots(spot)
+        remainingDistance.intValue = distance
+        walkingTimeInMinutes.intValue = calculateWalkingTime(distance)
+        availableSpotsInPercentage.intValue = calculateAvailableSpots(spot)
     }
 
     val borderColor = if (availableSpotsInPercentage.intValue < 10) Color.Red else Color.White
@@ -96,6 +151,18 @@ fun ParkingSpotItem(spot: ParkingOverview, searchQuery: String) {
                 .fillMaxWidth()
                 .clickable {
                     println("Clicked on ${spot.parkeringsplads}")
+
+                    // Set the selected parking spot
+                    selectedParkngSpot.value = spot.parkeringsplads
+
+                    // Check available spots percentage, if less than 10%, send notification
+                    if (availableSpotsInPercentage.intValue < 10) {
+                        notificationHandler.showSimpleNotification(
+                            title = "Find new spot",
+                            message = "Only ${availableSpotsInPercentage.intValue}% of the spots are available in ${spot.parkeringsplads}"
+                        )
+                    }
+
                     // Google Maps navigation URI
                     val gmmIntentUri =
                         Uri.parse("google.navigation:q=${spot.latitude},${spot.longitude}&mode=d")
@@ -106,6 +173,7 @@ fun ParkingSpotItem(spot: ParkingOverview, searchQuery: String) {
                     // Start the activity if Google Maps is available
                     if (mapIntent.resolveActivity(context.packageManager) != null) {
                         context.startActivity(mapIntent)
+                        isGoogleMapsLaunched.value = true // Set to true when Google Maps is launched
                     }
                 }
         ) {

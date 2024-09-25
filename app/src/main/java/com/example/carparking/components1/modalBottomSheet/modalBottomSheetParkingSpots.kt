@@ -1,5 +1,6 @@
 package com.example.carparking.components1.modalBottomSheet
 
+import NotificationHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 
@@ -29,6 +30,7 @@ fun ModalBottomSheetParkingSpots(
     onDismissRequest: () -> Unit,
     parkingViewModel: ParkingViewModel = viewModel(),
     searchQuery: String,
+    notificationHandler: NotificationHandler, // Accept NotificationHandler
 ) {
     val parkingSpots = parkingViewModel.parkingSpots.sortedByDescending { it.ledigePladser }
     val finalDestination = searchQuery
@@ -43,7 +45,7 @@ fun ModalBottomSheetParkingSpots(
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            Row (horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
+            Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
 
                 Text(
                     text = searchQuery.replaceFirstChar { it.uppercase() },
@@ -59,9 +61,12 @@ fun ModalBottomSheetParkingSpots(
                 )
             }
 
-
             parkingSpots.forEach { parkingSpot ->
-                ParkingSpotItem(spot = parkingSpot, searchQuery = searchQuery)
+                ParkingSpotItem(
+                    spot = parkingSpot,
+                    searchQuery = searchQuery,
+                    notificationHandler = notificationHandler // Pass the NotificationHandler to each ParkingSpotItem
+                )
             }
         }
     }
