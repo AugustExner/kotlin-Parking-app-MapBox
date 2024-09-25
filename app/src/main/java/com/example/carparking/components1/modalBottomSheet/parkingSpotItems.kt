@@ -170,7 +170,6 @@ fun ParkingSpotItem(spot: ParkingOverview, searchQuery: String) {
                     color = Color.Gray
                 )
             }
-
         }
     }
 }
