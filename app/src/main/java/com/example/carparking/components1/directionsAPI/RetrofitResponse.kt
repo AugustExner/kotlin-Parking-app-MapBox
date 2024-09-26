@@ -1,4 +1,4 @@
-package com.example.carparking.components1.parkingoverview.directionsAPI
+package com.example.carparking.components1.directionsAPI
 
 data class DirectionsResponse(
     val routes: List<Route>

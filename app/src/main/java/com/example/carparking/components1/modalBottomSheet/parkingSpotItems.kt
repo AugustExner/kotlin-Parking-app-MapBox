@@ -41,7 +41,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.carparking.R
 import com.example.carparking.components1.parkingoverview.ParkingOverview
-import com.example.carparking.components1.parkingoverview.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
+import com.example.carparking.components1.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
 
 
 
