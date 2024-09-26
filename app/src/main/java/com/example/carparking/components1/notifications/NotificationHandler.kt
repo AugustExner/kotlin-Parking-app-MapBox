@@ -3,7 +3,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import com.example.carparking.MainActivity // Import your main activity (or the target activity)
 import com.example.carparking.R
 import kotlin.random.Random
 

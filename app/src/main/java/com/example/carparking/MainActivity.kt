@@ -1,9 +1,8 @@
-package com.example.carparking
-
 import NotificationHandler
 import PermissionHandler
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,10 +21,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.Components.DestinationSearchBar
 import com.example.carparking.components1.MapComponents.MapBoxTest
 import com.example.carparking.components1.buttons.FindMyParkingButton
+import com.example.carparking.components1.geocoding.GeocodingViewModel
 import com.example.carparking.components1.modalBottomSheet.ModalBottomSheetParkingSpots
-
 import com.example.carparking.components1.parkingspots.ParkingViewModel
 import com.example.carparking.ui.theme.CarParkingTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -46,9 +46,7 @@ class MainActivity : ComponentActivity() {
                 CarParkingTheme {
                     // Call the main content including the bottom app bar
                     MainContent()
-
                 }
-
             }
         }
     }
@@ -59,9 +57,16 @@ class MainActivity : ComponentActivity() {
         var showBottomSheet by remember { mutableStateOf(false) }  // Control for showing the bottom sheet
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
         var inputText by remember { mutableStateOf("") }  // State for storing the search input
+        var destinationCoordinates by remember { mutableStateOf<List<Double>?>(null) } // State for coordinates
 
         // Create the NotificationHandler
         val notificationHandler = NotificationHandler(context = this@MainActivity)
+
+        // Initialize GeocodingViewModel
+        val geocodingViewModel: GeocodingViewModel = viewModel()
+
+        // Use rememberCoroutineScope to launch coroutines
+        val coroutineScope = rememberCoroutineScope()
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -71,8 +76,6 @@ class MainActivity : ComponentActivity() {
                     .padding(innerPadding)
                     .padding(8.dp)
             ) {
-                var inputText by remember { mutableStateOf("") }
-
                 // Display the map and components
                 Box(
                     modifier = Modifier
@@ -86,28 +89,49 @@ class MainActivity : ComponentActivity() {
                             shape = RoundedCornerShape(25.dp)
                         )
                 ) {
-                    // Pass the parking spots to the MapBoxTest composable
-                    MapBoxTest(context = this@MainActivity)
+                    // Log destination coordinates before passing them
+                    Log.d("MainActivity", "Destination Coordinates: $destinationCoordinates")
+                    MapBoxTest(
+                        context = this@MainActivity,
+                        destinationCoordinates = destinationCoordinates
+                    )
                 }
 
                 // Use the search bar to update the input text
                 DestinationSearchBar(onTextChange = { inputText = it })
 
-                // Pass the inputText and context to FindMyParkingButton
                 FindMyParkingButton(
                     text = inputText,
                     context = this@MainActivity,
                     onButtonClick = {
-                        //makeApiCall(inputText)  // Make API call when the button is clicked
-                        showBottomSheet = true
+                        // Log the input text before fetching coordinates
+                        Log.d("MainActivity", "Input Text: $inputText")
 
+                        // Use the GeocodingViewModel to fetch coordinates
+                        coroutineScope.launch {
+                            val coordinates =
+                                geocodingViewModel.getCoordinatesFromDestination(inputText)
+
+                            // Log the fetched coordinates
+                            Log.d("MainActivity", "Fetched Coordinates: $coordinates")
+
+                            coordinates?.let { fetchedCoordinates ->
+                                destinationCoordinates =
+                                    fetchedCoordinates // Update state with fetched coordinates
+                                showBottomSheet = true
+                            } ?: run {
+                                // Handle error case when coordinates are not found
+                                Log.e(
+                                    "GeocodingError",
+                                    "Coordinates not found for the destination."
+                                )
+                            }
+                        }
                     }
                 )
 
-
                 // Show the PartialBottomSheet when triggered
                 if (showBottomSheet) {
-                    // Pass the parking spots to the ModalBottomSheetParkingSpots composable
                     ModalBottomSheetParkingSpots(
                         sheetState = sheetState,
                         onDismissRequest = { showBottomSheet = false },
@@ -118,7 +142,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
 
     @Preview(showBackground = true)
     @Composable

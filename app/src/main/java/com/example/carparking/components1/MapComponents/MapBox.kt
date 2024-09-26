@@ -26,9 +26,12 @@ import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportS
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
 import com.mapbox.maps.extension.compose.annotation.rememberIconImage
 
-
 @Composable
-fun MapBoxTest(context: Context, parkingViewModel: ParkingViewModel = viewModel()) {
+fun MapBoxTest(
+    context: Context,
+    parkingViewModel: ParkingViewModel = viewModel(),
+    destinationCoordinates: List<Double>? = null // Accept coordinates as parameter
+) {
     val parkingSpots = parkingViewModel.parkingSpots
 
     val markerResourceId by remember {
@@ -39,41 +42,58 @@ fun MapBoxTest(context: Context, parkingViewModel: ParkingViewModel = viewModel(
     val permissionHandler = PermissionHandler(context123 as Activity)
     var location by remember { mutableStateOf<Location?>(null) }
     permissionHandler.checkAndRequestLocationPermission {
-        // Once permission is granted, fetch the location
         permissionHandler.fetchLocation {
             location = it  // Update the location state
-            Log.d(TAG, "Location: $location")
+            Log.d(TAG, "Fetched Location: $location")
         }
     }
 
-    val mapViewportState = rememberMapViewportState {
-    }
+    val mapViewportState = rememberMapViewportState()
 
-    LaunchedEffect(location) {
+    // Update the camera location based on user location or search destination
+    LaunchedEffect(location, destinationCoordinates) {
+        // Log the current location when it changes
         location?.let { loc ->
-            // Update camera to center on user location when available
-            mapViewportState.setCameraOptions() {
+            Log.d(
+                "MapBoxTest",
+                "Current Location: Longitude=${loc.longitude}, Latitude=${loc.latitude}"
+            )
+            mapViewportState.setCameraOptions {
                 center(Point.fromLngLat(loc.longitude, loc.latitude))
                 zoom(12.0)
             }
-        }
+        } ?: Log.d("MapBoxTest", "Location is null, not updating to user location.")
+
+        // If destination coordinates are provided, update the camera to the destination
+        destinationCoordinates?.let { coords ->
+            Log.d(
+                "MapBoxTest",
+                "Destination Coordinates: Longitude=${coords[0]}, Latitude=${coords[1]}"
+            )
+            val destinationPoint = Point.fromLngLat(coords[0], coords[1])
+            mapViewportState.setCameraOptions {
+                center(destinationPoint)
+                zoom(12.0)
+            }
+        } ?: Log.d("MapBoxTest", "No destination coordinates provided.")
     }
 
-    // Render the map regardless of userLocation
     MapboxMap(
         Modifier.fillMaxSize(),
         mapViewportState = mapViewportState
     ) {
-        // Once the location is fetched, show the user marker
-        if (location != null) {
+        // Add a marker for the user's current location if available
+        location?.let { loc ->
             val marker = rememberIconImage(
                 key = markerResourceId,
                 painter = painterResource(markerResourceId)
             )
-            PointAnnotation(Point.fromLngLat(location!!.longitude, location!!.latitude)) {
+            PointAnnotation(Point.fromLngLat(loc.longitude, loc.latitude)) {
                 iconImage = marker
             }
-        }
+        } ?: Log.d("MapBoxTest", "No location available to add marker.")
+
+        // Render parking spots on the map
         parkingSpots.map {
             CustomMapBoxMarker(parkingSpot = it)
         }
