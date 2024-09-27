@@ -28,7 +28,7 @@ import com.mapbox.maps.extension.compose.annotation.rememberIconImage
 
 
 @Composable
-fun MapBoxTest(context: Context, parkingViewModel: ParkingViewModel = viewModel()) {
+fun MapBoxTest(context: Context, parkingViewModel: ParkingViewModel = viewModel(), openBottomSheet: () -> Unit) {
     val parkingSpots = parkingViewModel.parkingSpots
 
     val markerResourceId by remember {
@@ -75,7 +75,7 @@ fun MapBoxTest(context: Context, parkingViewModel: ParkingViewModel = viewModel(
             }
         }
         parkingSpots.map {
-            CustomMapBoxMarker(parkingSpot = it)
+            CustomMapBoxMarker(parkingSpot = it, openBottomSheet = openBottomSheet)
         }
     }
 }

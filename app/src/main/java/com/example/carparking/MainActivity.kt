@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
                         )
                 ) {
                     // Pass the parking spots to the MapBoxTest composable
-                    MapBoxTest(context = this@MainActivity)
+                    MapBoxTest(context = this@MainActivity, openBottomSheet = { showBottomSheet = true })
                 }
 
                 // Use the search bar to update the input text
@@ -105,6 +105,8 @@ class MainActivity : ComponentActivity() {
                 )
 
 
+
+
                 // Show the PartialBottomSheet when triggered
                 if (showBottomSheet) {
                     // Pass the parking spots to the ModalBottomSheetParkingSpots composable
@@ -118,6 +120,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+
+
+
+
 
 
     @Preview(showBackground = true)

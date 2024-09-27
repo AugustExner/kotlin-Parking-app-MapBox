@@ -1,6 +1,7 @@
 package com.example.carparking.components1.MapComponents
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,7 @@ import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 
 @Composable
-fun CustomMapBoxMarker(parkingSpot: ParkingOverview) {
+fun CustomMapBoxMarker(parkingSpot: ParkingOverview, openBottomSheet: () -> Unit) {
     ViewAnnotation(
         options = viewAnnotationOptions {
             geometry(geometry = Point.fromLngLat(parkingSpot.longitude.toDouble(), parkingSpot.latitude.toDouble()))
@@ -43,7 +44,9 @@ fun CustomMapBoxMarker(parkingSpot: ParkingOverview) {
         Card(elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 5.dp
         ),
-            modifier = Modifier.size(width = 120.dp, height = 50.dp)
+            modifier = Modifier
+                .size(width = 120.dp, height = 50.dp)
+                .clickable { openBottomSheet() }
         ) {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -66,14 +69,14 @@ fun CustomMapBoxMarker(parkingSpot: ParkingOverview) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CustomMarkerPreview() {
-    CustomMapBoxMarker(parkingSpot = ParkingOverview(
-        id = 1, parkeringsplads = "Willy Sørensens Plads",
-        antalPladser = 100,
-        ledigePladser = 69,
-        optagedePladser = 31,
-        latitude = "69",
-        longitude = "69"))
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CustomMarkerPreview() {
+//    CustomMapBoxMarker(parkingSpot = ParkingOverview(
+//        id = 1, parkeringsplads = "Willy Sørensens Plads",
+//        antalPladser = 100,
+//        ledigePladser = 69,
+//        optagedePladser = 31,
+//        latitude = "69",
+//        longitude = "69"))
+//}
