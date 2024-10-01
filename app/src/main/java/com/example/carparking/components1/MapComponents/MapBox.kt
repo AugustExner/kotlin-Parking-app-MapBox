@@ -64,16 +64,21 @@ fun MapBoxTest(
             }
         } ?: Log.d("MapBoxTest", "Location is null, not updating to user location.")
 
-        // If destination coordinates are provided, update the camera to the destination
+        // Log the destination coordinates if provided
         destinationCoordinates?.let { coords ->
-            Log.d(
-                "MapBoxTest",
-                "Destination Coordinates: Longitude=${coords[0]}, Latitude=${coords[1]}"
-            )
-            val destinationPoint = Point.fromLngLat(coords[0], coords[1])
-            mapViewportState.setCameraOptions {
-                center(destinationPoint)
-                zoom(12.0)
+            Log.d("MapBoxTest", "Destination Coordinates: $coords")
+            if (coords.size >= 2) {
+                Log.d("MapBoxTest", "Destination Longitude: ${coords[0]}, Latitude: ${coords[1]}")
+                val destinationPoint = Point.fromLngLat(coords[0], coords[1])
+                mapViewportState.setCameraOptions {
+                    center(destinationPoint)
+                    zoom(15.0)
+                }
+            } else {
+                Log.d(
+                    "MapBoxTest",
+                    "Destination coordinates list does not contain enough elements."
+                )
             }
         } ?: Log.d("MapBoxTest", "No destination coordinates provided.")
     }
@@ -99,3 +104,4 @@ fun MapBoxTest(
         }
     }
 }
+

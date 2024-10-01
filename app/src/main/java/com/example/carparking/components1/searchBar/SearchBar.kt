@@ -1,5 +1,6 @@
 package com.example.carparking.Components
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +22,8 @@ fun DestinationScreen() {
     // Pass the destination state to both the search bar and button
     DestinationSearchBar(onTextChange = { newText ->
         destination = newText // Update the state when the user types in the search bar
+        Log.d("DestinationState", "Current destination: $destination")
+
     })
 
     // Pass the current text and context to the button
@@ -36,6 +39,9 @@ fun DestinationSearchBar(onTextChange: (String) -> Unit) {
         onValueChange = {
             text = it
             onTextChange(it)  // Pass the updated text to the parent composable
+
+            // Log the current input for debugging
+            Log.d("DestinationSearchBar", "Current Input: $it")
         },
         label = { Text("Destination") },
         shape = RoundedCornerShape(15.dp),
