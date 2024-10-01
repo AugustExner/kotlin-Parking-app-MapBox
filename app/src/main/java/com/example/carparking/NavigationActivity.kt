@@ -74,12 +74,20 @@ class NavigationActivity : ComponentActivity() {
     private lateinit var maneuverView: MapboxManeuverView
     private lateinit var maneuverApi: MapboxManeuverApi
 
-    var destination: Point =
-        Point.fromLngLat(9.532441, 55.708129) // replace with destination location
+    private lateinit var destination: Point
+
+//    var destination: Point =
+//        Point.fromLngLat(intent.getDoubleExtra("longitude", 0.0),intent.getDoubleExtra("longitude", 0.0)) // replace with destination location
+
+
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        destination = Point.fromLngLat(intent.getDoubleExtra("longitude", 10.188820),intent.getDoubleExtra("latitude", 56.171654))
+
+        Log.v(TAG, "Destination: ${intent.getDoubleExtra("longitude", 0.0)}, ${intent.getDoubleExtra("latitude", 0.0)}.")
+
         setContentView(R.layout.activity_navigation)
         mapView = findViewById(id.mapView)
 

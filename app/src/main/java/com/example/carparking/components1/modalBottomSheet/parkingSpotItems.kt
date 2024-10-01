@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.example.carparking.NavigationActivity
 import com.example.carparking.R
 import com.example.carparking.components1.parkingoverview.ParkingOverview
 import com.example.carparking.components1.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
@@ -164,18 +165,30 @@ fun ParkingSpotItem(
                         )
                     }
 
-                    // Google Maps navigation URI
-                    val gmmIntentUri =
-                        Uri.parse("google.navigation:q=${spot.latitude},${spot.longitude}&mode=d")
-                    // Create an Intent to open Google Maps in navigation mode
-                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
-                        setPackage("com.google.android.apps.maps")
-                    }
-                    // Start the activity if Google Maps is available
-                    if (mapIntent.resolveActivity(context.packageManager) != null) {
-                        context.startActivity(mapIntent)
-                        isGoogleMapsLaunched.value = true // Set to true when Google Maps is launched
-                    }
+
+
+                    val intent = Intent(context, NavigationActivity::class.java)
+                    Log.v("LatititudeToFloatCHECKKKKKKK", "Latitude: ${spot.latitude.toDouble()}, ${spot.longitude.toFloat()}")
+                    intent.putExtra("latitude", spot.latitude.toDouble())
+                    intent.putExtra("longitude", spot.longitude.toDouble())
+                    context.startActivity(intent)
+
+//                    // Google Maps navigation URI
+//                    val gmmIntentUri =
+//                        Uri.parse("google.navigation:q=${spot.latitude},${spot.longitude}&mode=d")
+//                    // Create an Intent to open Google Maps in navigation mode
+//                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
+//                        setPackage("com.google.android.apps.maps")
+//                    }
+//                    // Start the activity if Google Maps is available
+//                    if (mapIntent.resolveActivity(context.packageManager) != null) {
+//                        context.startActivity(mapIntent)
+//                        isGoogleMapsLaunched.value = true // Set to true when Google Maps is launched
+//                    }
+
+
+
+
                 }
         ) {
             // Distance row

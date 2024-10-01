@@ -1,6 +1,7 @@
 package com.example.carparking
 
 import NotificationHandler
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -48,9 +50,7 @@ class MainActivity : ComponentActivity() {
                 CarParkingTheme {
                     // Call the main content including the bottom app bar
                     MainContent()
-
                 }
-
             }
         }
     }
@@ -58,6 +58,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun MainContent(parkingViewModel: ParkingViewModel = viewModel()) {
+
         var showBottomSheet by remember { mutableStateOf(false) }  // Control for showing the bottom sheet
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
         var inputText by remember { mutableStateOf("") }  // State for storing the search input
@@ -107,6 +108,14 @@ class MainActivity : ComponentActivity() {
                 // Use the search bar to update the input text
                 DestinationSearchBar(onTextChange = { inputText = it })
 
+                Button(onClick = {
+                    val context = this@MainActivity
+                    val intent = Intent(context, NavigationActivity::class.java)
+                    context.startActivity(intent)
+                }) {
+                    Text("Go to Second Activity")
+                }
+
                 // Pass the inputText and context to FindMyParkingButton
                 FindMyParkingButton(
                     text = inputText,
@@ -136,6 +145,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
+
                 )
 
 
