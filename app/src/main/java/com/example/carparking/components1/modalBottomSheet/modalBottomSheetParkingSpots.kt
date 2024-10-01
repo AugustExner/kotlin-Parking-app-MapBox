@@ -21,7 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.R
 import com.example.carparking.components1.parkingoverview.ParkingOverview
 import com.example.carparking.components1.parkingoverview.ParkingViewModel
-import com.example.carparking.components1.parkingoverview.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
+import com.example.carparking.components1.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

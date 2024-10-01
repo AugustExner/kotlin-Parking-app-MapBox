@@ -1,4 +1,4 @@
-package com.example.carparking.components1.parkingoverview.directionsAPI
+package com.example.carparking.components1.directionsAPI
 
 import com.example.carparking.components1.googlemaps.GoogleMapsRetrofitClient
 import retrofit2.Call

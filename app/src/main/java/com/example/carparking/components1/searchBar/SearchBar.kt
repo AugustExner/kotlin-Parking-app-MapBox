@@ -43,6 +43,7 @@ fun DestinationSearchBar(onTextChange: (String) -> Unit) {
             // Log the current input for debugging
             Log.d("DestinationSearchBar", "Current Input: $it")
         },
+        singleLine = true,
         label = { Text("Destination") },
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier

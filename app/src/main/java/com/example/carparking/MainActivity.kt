@@ -48,7 +48,9 @@ class MainActivity : ComponentActivity() {
                 CarParkingTheme {
                     // Call the main content including the bottom app bar
                     MainContent()
+
                 }
+
             }
         }
     }
@@ -78,6 +80,8 @@ class MainActivity : ComponentActivity() {
                     .padding(innerPadding)
                     .padding(8.dp)
             ) {
+                var inputText by remember { mutableStateOf("") }
+
                 // Display the map and components
                 Box(
                     modifier = Modifier
@@ -95,13 +99,15 @@ class MainActivity : ComponentActivity() {
                     Log.d("MainActivity", "Destination Coordinates: $destinationCoordinates")
                     MapBoxTest(
                         context = this@MainActivity,
-                        destinationCoordinates = destinationCoordinates
+                        destinationCoordinates = destinationCoordinates,
+                        openBottomSheet = { showBottomSheet = true }
                     )
                 }
 
                 // Use the search bar to update the input text
                 DestinationSearchBar(onTextChange = { inputText = it })
 
+                // Pass the inputText and context to FindMyParkingButton
                 FindMyParkingButton(
                     text = inputText,
                     context = this@MainActivity,
@@ -132,8 +138,10 @@ class MainActivity : ComponentActivity() {
                     }
                 )
 
+
                 // Show the PartialBottomSheet when triggered
                 if (showBottomSheet) {
+                    // Pass the parking spots to the ModalBottomSheetParkingSpots composable
                     ModalBottomSheetParkingSpots(
                         sheetState = sheetState,
                         onDismissRequest = { showBottomSheet = false },
@@ -144,6 +152,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 
     @Preview(showBackground = true)
     @Composable

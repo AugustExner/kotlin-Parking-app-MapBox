@@ -41,7 +41,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.carparking.R
 import com.example.carparking.components1.parkingoverview.ParkingOverview
-import com.example.carparking.components1.parkingoverview.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
+import com.example.carparking.components1.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
 
 
 
@@ -74,6 +74,7 @@ fun ParkingSpotItem(
         return (result)
     }
 
+
     fun checkAndSendNotification() {
         if (isGoogleMapsLaunched.value && availableSpotsInPercentage.intValue < 10) {
             notificationHandler.showSimpleNotification(
@@ -85,7 +86,7 @@ fun ParkingSpotItem(
 
     // Periodically check availability after Google Maps is launched
     LaunchedEffect(isGoogleMapsLaunched.value) {
-        if (isGoogleMapsLaunched.value) {
+        if (isGoogleMapsLaunched.value && availableSpotsInPercentage.intValue < 10) {
             while (true) {
                 // Simulate periodic checks (e.g., every 30 seconds)
                 kotlinx.coroutines.delay(30000L)

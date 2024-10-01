@@ -26,11 +26,13 @@ import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportS
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
 import com.mapbox.maps.extension.compose.annotation.rememberIconImage
 
+
 @Composable
 fun MapBoxTest(
     context: Context,
     parkingViewModel: ParkingViewModel = viewModel(),
-    destinationCoordinates: List<Double>? = null // Accept coordinates as parameter
+    destinationCoordinates: List<Double>? = null,
+    openBottomSheet: () -> Unit
 ) {
     val parkingSpots = parkingViewModel.parkingSpots
 
@@ -42,6 +44,7 @@ fun MapBoxTest(
     val permissionHandler = PermissionHandler(context123 as Activity)
     var location by remember { mutableStateOf<Location?>(null) }
     permissionHandler.checkAndRequestLocationPermission {
+        // Once permission is granted, fetch the location
         permissionHandler.fetchLocation {
             location = it  // Update the location state
             Log.d(TAG, "Fetched Location: $location")
@@ -83,6 +86,7 @@ fun MapBoxTest(
         } ?: Log.d("MapBoxTest", "No destination coordinates provided.")
     }
 
+    // Render the map regardless of userLocation
     MapboxMap(
         Modifier.fillMaxSize(),
         mapViewportState = mapViewportState
@@ -100,8 +104,7 @@ fun MapBoxTest(
 
         // Render parking spots on the map
         parkingSpots.map {
-            CustomMapBoxMarker(parkingSpot = it)
+            CustomMapBoxMarker(parkingSpot = it, openBottomSheet = openBottomSheet)
         }
     }
 }
-
