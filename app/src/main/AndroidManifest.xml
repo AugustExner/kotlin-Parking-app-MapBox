@@ -5,9 +5,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
         android:allowBackup="true"
+        android:name=".components1.notifications.NotificationApplication"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -15,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CarParking"
-        tools:targetApi="31">
+        tools:targetApi="tiramisu">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -26,8 +28,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="NavigationActivity"
+            android:exported="true"
+            android:label="Navigation Activity"
+            android:theme="@style/Theme.CarParking" />
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCs8-oQtxeKY_dko0kOwKhW95j8YeO10Bc"/>
+            android:value="AIzaSyDgORILdn4tqoGRbvGsH3eKXix5LGPldi8"/>
+
     </application>
 
 </manifest>

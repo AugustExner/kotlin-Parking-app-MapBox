@@ -13,7 +13,7 @@ import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.content.pm.PackageManager
-import com.example.carparking.components.MapComponents.MapsTest
+import com.example.carparking.components1.MapComponents.MapsTest
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.ExperimentalCoroutinesApi
