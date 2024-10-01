@@ -2,7 +2,8 @@
 accompanistPermissions = "0.31.1-alpha"
 activityComposeVersion = "1.7.2"
 agp = "8.5.2"
-android = "11.6.0"
+android = "3.4.0-rc.1"
+androidVersion = "11.6.0"
 autofill = "1.0.0-beta.39"
 converterGson = "2.9.0"
 kotlin = "1.9.0"
@@ -30,6 +31,13 @@ runtimeLivedata = "1.6.8"
 ui = "1.6.8"
 uiTooling = "1.6.8"
 uiToolingPreview = "1.6.8"
+copilot = "3.4.0-rc.1"
+constraintlayout = "2.1.4"
+navigation = "3.4.0-rc.1"
+tripdata = "3.4.0-rc.1"
+uiComponents = "3.4.0-rc.1"
+uiMaps = "3.4.0-rc.1"
+voice = "3.4.0-rc.1"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -69,6 +77,17 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
+
+navigation = { module = "com.mapbox.navigationcore:navigation", version.ref = "navigation" }
+navigationcore-android = { module = "com.mapbox.navigationcore:android", version.ref = "android" }
+navigationcore-tripdata = { module = "com.mapbox.navigationcore:tripdata", version.ref = "tripdata" }
+
+navigationcore-ui-maps = { module = "com.mapbox.navigationcore:ui-maps", version.ref = "uiMaps" }
+navigationcore-voice = { module = "com.mapbox.navigationcore:voice", version.ref = "voice" }
+
+ui-components = { module = "com.mapbox.navigationcore:ui-components", version.ref = "uiComponents" }
+copilot = { module = "com.mapbox.navigationcore:copilot", version.ref = "copilot" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

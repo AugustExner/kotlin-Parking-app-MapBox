@@ -1,10 +1,10 @@
 package com.example.carparking.components1.MapComponents
 
-import PermissionHandler
 import android.app.Activity
 import android.content.Context
 import android.location.Location
 import android.util.Log
+import com.example.navigationtest.PermissionHandler
 
 class LocationHelper(private val context: Context) {
 
@@ -13,7 +13,7 @@ class LocationHelper(private val context: Context) {
         val permissionHandler = PermissionHandler(context as Activity)
 
         // Check and request location permission
-        permissionHandler.checkAndRequestLocationPermission {
+        permissionHandler.checkAndRequestPermissions {
             // Fetch location once permission is granted
             permissionHandler.fetchLocation { location ->
                 Log.d("LocationHelper", "Location: $location")

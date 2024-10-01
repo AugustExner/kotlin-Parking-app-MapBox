@@ -1,7 +1,6 @@
 package com.example.carparking
 
 import NotificationHandler
-import PermissionHandler
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +26,7 @@ import com.example.carparking.components1.geocoding.GeocodingViewModel
 import com.example.carparking.components1.modalBottomSheet.ModalBottomSheetParkingSpots
 import com.example.carparking.components1.parkingspots.ParkingViewModel
 import com.example.carparking.ui.theme.CarParkingTheme
+import com.example.navigationtest.PermissionHandler
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         permissionHandler = PermissionHandler(this)
 
         // Check and request location permission
-        permissionHandler.checkAndRequestLocationPermission {
+        permissionHandler.checkAndRequestPermissions {
             enableEdgeToEdge()
             setContent {
                 CarParkingTheme {

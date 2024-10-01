@@ -118,5 +118,13 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation (libs.androidx.lifecycle.runtime.compose)
 
-
+// MAPBOX
+    implementation(libs.navigation) // Navigation Component
+    implementation(libs.copilot) // Copilot
+    implementation(libs.navigationcore.ui.maps) // Map Component
+    implementation(libs.navigationcore.voice) // Voice Component
+    implementation(libs.navigationcore.tripdata) // Trip data component
+    implementation(libs.navigationcore.android) // Android Component
+    implementation(libs.ui.components) // UI Component
+    implementation(libs.androidx.constraintlayout) // or the latest stable version
 }

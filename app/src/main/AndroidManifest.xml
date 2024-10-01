@@ -28,6 +28,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="NavigationActivity"
+            android:exported="true"
+            android:label="Navigation Activity"
+            android:theme="@style/Theme.CarParking" />
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDgORILdn4tqoGRbvGsH3eKXix5LGPldi8"/>
 

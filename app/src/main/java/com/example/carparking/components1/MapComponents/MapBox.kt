@@ -1,6 +1,5 @@
 package com.example.carparking.components1.MapComponents
 
-import PermissionHandler
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -20,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.R
 import com.example.carparking.components1.parkingoverview.ParkingViewModel
+import com.example.navigationtest.PermissionHandler
 import com.mapbox.geojson.Point
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
@@ -43,7 +43,7 @@ fun MapBoxTest(
     val context123 = LocalContext.current
     val permissionHandler = PermissionHandler(context123 as Activity)
     var location by remember { mutableStateOf<Location?>(null) }
-    permissionHandler.checkAndRequestLocationPermission {
+    permissionHandler.checkAndRequestPermissions {
         // Once permission is granted, fetch the location
         permissionHandler.fetchLocation {
             location = it  // Update the location state
