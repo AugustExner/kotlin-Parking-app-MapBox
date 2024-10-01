@@ -37,6 +37,7 @@ fun DestinationSearchBar(onTextChange: (String) -> Unit) {
             text = it
             onTextChange(it)  // Pass the updated text to the parent composable
         },
+        singleLine = true,
         label = { Text("Destination") },
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier
