@@ -2,6 +2,8 @@ package com.example.carparking
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -11,6 +13,8 @@ import android.widget.LinearLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.core.content.ContextCompat
 import com.example.carparking.R.id
 import com.example.navigationtest.PermissionHandler
@@ -76,28 +80,36 @@ class NavigationActivity : ComponentActivity() {
 
     private lateinit var destination: Point
 
-//    var destination: Point =
-//        Point.fromLngLat(intent.getDoubleExtra("longitude", 0.0),intent.getDoubleExtra("longitude", 0.0)) // replace with destination location
-
-
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        destination = Point.fromLngLat(intent.getDoubleExtra("longitude", 10.188820),intent.getDoubleExtra("latitude", 56.171654))
+        destination = Point.fromLngLat(
+            intent.getDoubleExtra("longitude", 10.188820),
+            intent.getDoubleExtra("latitude", 56.171654)
+        )
 
-        Log.v(TAG, "Destination: ${intent.getDoubleExtra("longitude", 0.0)}, ${intent.getDoubleExtra("latitude", 0.0)}.")
+        Log.v(
+            TAG,
+            "Destination: ${
+                intent.getDoubleExtra(
+                    "longitude",
+                    0.0
+                )
+            }, ${intent.getDoubleExtra("latitude", 0.0)}."
+        )
 
         setContentView(R.layout.activity_navigation)
         mapView = findViewById(id.mapView)
 
-
         // Set up the button click listener
         val changeDestinationButton = findViewById<Button>(id.changeDestinationButton)
         changeDestinationButton.setOnClickListener {
-            // New destination point
-            val newDestination = Point.fromLngLat(10.188820, 56.171654) // Example coordinates, replace with your own
-            changeRoute(newDestination)
+
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            this.startActivity(intent)
+            finish()
         }
 
         // Initialize PermissionHandler
@@ -191,6 +203,7 @@ class NavigationActivity : ComponentActivity() {
                 viewportDataSource
             )
         }
+
     }
 
     // RouteProgressObserver to update the maneuver view
@@ -312,11 +325,6 @@ class NavigationActivity : ComponentActivity() {
             ManeuverOptions.Builder().build(),
             MapboxRouteShieldApi()
         )
-    }
-
-    private fun changeRoute(newDestination: Point) {
-        destination = newDestination
-        findRoute(destination)
     }
 
     override fun onDestroy() {

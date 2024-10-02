@@ -1,11 +1,9 @@
 package com.example.carparking.components1.modalBottomSheet
 
 import NotificationHandler
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
@@ -13,15 +11,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.carparking.R
-import com.example.carparking.components1.parkingoverview.ParkingOverview
 import com.example.carparking.components1.parkingoverview.ParkingViewModel
-import com.example.carparking.components1.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,8 +26,10 @@ fun ModalBottomSheetParkingSpots(
     searchQuery: String,
     notificationHandler: NotificationHandler, // Accept NotificationHandler
 ) {
+
     val parkingSpots = parkingViewModel.parkingSpots.sortedByDescending { it.ledigePladser }
     val finalDestination = searchQuery
+
     ModalBottomSheet(
         modifier = Modifier.fillMaxHeight(),
         sheetState = sheetState,
@@ -65,7 +61,10 @@ fun ModalBottomSheetParkingSpots(
                 ParkingSpotItem(
                     spot = parkingSpot,
                     searchQuery = searchQuery,
-                    notificationHandler = notificationHandler // Pass the NotificationHandler to each ParkingSpotItem
+                    notificationHandler = notificationHandler,
+                    availableSpotsInPercentage = parkingViewModel.calculateAvailableSpots(parkingSpot),
+                    parkingViewModel = parkingViewModel
+
                 )
             }
         }

@@ -2,7 +2,6 @@ package com.example.carparking.components1.modalBottomSheet
 
 import NotificationHandler
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -43,24 +42,23 @@ import com.example.carparking.NavigationActivity
 import com.example.carparking.R
 import com.example.carparking.components1.parkingoverview.ParkingOverview
 import com.example.carparking.components1.directionsAPI.makeApiCallTestWithOriginAndDestinationParameter
-
+import com.example.carparking.components1.parkingoverview.ParkingViewModel
 
 
 @Composable
 fun ParkingSpotItem(
     spot: ParkingOverview,
     searchQuery: String,
-    notificationHandler: NotificationHandler
+    notificationHandler: NotificationHandler,
+    availableSpotsInPercentage: Int,
+    parkingViewModel: ParkingViewModel
 ) {
     val remainingDistance = remember { mutableIntStateOf(0) }
     val walkingTimeInMinutes = remember { mutableIntStateOf(0) }
-    val availableSpotsInPercentage = remember { mutableIntStateOf(0) }
-    val selectedParkngSpot = remember { mutableStateOf("") }
-    val isGoogleMapsLaunched = remember { mutableStateOf(false) } // Track if Google Maps is launched
+    val isNavigationActivityLaunched =
+        remember { mutableStateOf(false) } // Track if NavigationActivity is launched
     val context = LocalContext.current
     val lifecycleOwner = LocalContext.current as LifecycleOwner
-
-
 
     fun calculateWalkingTime(distance: Int): Int {
         val walkingSpeed = 1.3889 // meters per second
@@ -75,34 +73,63 @@ fun ParkingSpotItem(
         return (result)
     }
 
-
-    fun checkAndSendNotification() {
-        if (isGoogleMapsLaunched.value && availableSpotsInPercentage.intValue < 10) {
+    fun checkAndSendNotification(currentSpot: ParkingOverview, newSpot: ParkingOverview) {
+        if (isNavigationActivityLaunched.value && availableSpotsInPercentage < 10) {
             notificationHandler.showSimpleNotification(
                 title = "Find new spot",
-                message = "Only ${availableSpotsInPercentage.intValue}% of the spots are available in ${spot.parkeringsplads}"
+                message = "Only ${availableSpotsInPercentage}% of the spots are available in ${currentSpot.parkeringsplads} Reroute to ${newSpot.parkeringsplads} in 5 seconds"
             )
+            val intent = Intent(context, NavigationActivity::class.java)
+            intent.putExtra("notification", true)
         }
     }
 
-    // Periodically check availability after Google Maps is launched
-    LaunchedEffect(isGoogleMapsLaunched.value) {
-        if (isGoogleMapsLaunched.value && availableSpotsInPercentage.intValue < 10) {
-            while (true) {
-                // Simulate periodic checks (e.g., every 30 seconds)
-                kotlinx.coroutines.delay(30000L)
-                checkAndSendNotification()
+    fun sendNotification() {
+        // Check available spots percentage, if less than 10%, send notification
+        notificationHandler.showSimpleNotification(
+            title = "Find new spot",
+            message = "Only ${availableSpotsInPercentage}% of the spots are available in ${spot.parkeringsplads}"
+        )
+    }
+
+
+    fun startMapBoxNavigation(lat: Double, long: Double) {
+        val intent = Intent(context, NavigationActivity::class.java)
+        //Flag
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        Log.v(
+            "LatitudeToFloat",
+            "Latitude: $lat, $long"
+        )
+
+        intent.putExtra("latitude", lat)
+        intent.putExtra("longitude", long)
+
+        context.startActivity(intent)
+        isNavigationActivityLaunched.value = true;
+    }
+
+    LaunchedEffect(isNavigationActivityLaunched.value) {
+        if (isNavigationActivityLaunched.value && availableSpotsInPercentage < 10) {
+            // the selected spot is no longer available
+            val bestAvailableSpot = parkingViewModel.findBestAvailableSpot(spot)
+            if (bestAvailableSpot != null) {
+                checkAndSendNotification(spot, bestAvailableSpot)
+                kotlinx.coroutines.delay(8000L)
+                startMapBoxNavigation(
+                    bestAvailableSpot.latitude.toDouble(),
+                    bestAvailableSpot.longitude.toDouble()
+                )
             }
         }
     }
-
 
     // Lifecycle event observer to track when the user returns to the app
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                // When the app is resumed, set Google Maps as not launched
-                isGoogleMapsLaunched.value = false
+                // When the app is resumed, set navigation as not launched
+                isNavigationActivityLaunched.value = false
             }
         }
         // Add the observer to the lifecycle
@@ -119,20 +146,16 @@ fun ParkingSpotItem(
     ) { distance ->
         remainingDistance.intValue = distance
         walkingTimeInMinutes.intValue = calculateWalkingTime(distance)
-        availableSpotsInPercentage.intValue = calculateAvailableSpots(spot)
     }
 
-    val borderColor = if (availableSpotsInPercentage.intValue < 10) Color.Red else Color.White
-    val printSpots = availableSpotsInPercentage.intValue
+    val borderColor = if (availableSpotsInPercentage < 10) Color.Red else Color.White
 
     val pris =
-        if (spot.parkeringsplads.equals("Bryggen")) "14.kr pr time"
-        else if (spot.parkeringsplads.equals("P-hus Cronhammar")) "9.kr pr time"
-        else if (spot.parkeringsplads.equals("P-hus Albert")) "9.kr pr time"
-        else if (spot.parkeringsplads.equals("Gunhilds Plads")) "7,5.kr pr time"
-        else "6.kr pr time"
-
-
+        if (spot.parkeringsplads.equals("Bryggen")) "14"
+        else if (spot.parkeringsplads.equals("P-hus Cronhammar")) "9"
+        else if (spot.parkeringsplads.equals("P-hus Albert")) "9"
+        else if (spot.parkeringsplads.equals("Gunhilds Plads")) "7.5"
+        else "6"
 
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -147,48 +170,17 @@ fun ParkingSpotItem(
             ), // Add border with conditional color
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
+        spot.distance = remainingDistance.intValue
+        spot.price = pris.toDouble()
         Column(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
                 .clickable {
-                    println("Clicked on ${spot.parkeringsplads}")
-
-                    // Set the selected parking spot
-                    selectedParkngSpot.value = spot.parkeringsplads
-
                     // Check available spots percentage, if less than 10%, send notification
-                    if (availableSpotsInPercentage.intValue < 10) {
-                        notificationHandler.showSimpleNotification(
-                            title = "Find new spot",
-                            message = "Only ${availableSpotsInPercentage.intValue}% of the spots are available in ${spot.parkeringsplads}"
-                        )
-                    }
-
-
-
-                    val intent = Intent(context, NavigationActivity::class.java)
-                    Log.v("LatititudeToFloatCHECKKKKKKK", "Latitude: ${spot.latitude.toDouble()}, ${spot.longitude.toFloat()}")
-                    intent.putExtra("latitude", spot.latitude.toDouble())
-                    intent.putExtra("longitude", spot.longitude.toDouble())
-                    context.startActivity(intent)
-
-//                    // Google Maps navigation URI
-//                    val gmmIntentUri =
-//                        Uri.parse("google.navigation:q=${spot.latitude},${spot.longitude}&mode=d")
-//                    // Create an Intent to open Google Maps in navigation mode
-//                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
-//                        setPackage("com.google.android.apps.maps")
-//                    }
-//                    // Start the activity if Google Maps is available
-//                    if (mapIntent.resolveActivity(context.packageManager) != null) {
-//                        context.startActivity(mapIntent)
-//                        isGoogleMapsLaunched.value = true // Set to true when Google Maps is launched
-//                    }
-
-
-
-
+                    sendNotification()
+                    // Launch MapBox Navigation
+                    startMapBoxNavigation(spot.latitude.toDouble(), spot.longitude.toDouble())
                 }
         ) {
             // Distance row
@@ -247,7 +239,7 @@ fun ParkingSpotItem(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = pris,
+                    text = pris + ".kr pr time",
                     fontSize = 14.sp,
                     color = Color.Gray
                 )

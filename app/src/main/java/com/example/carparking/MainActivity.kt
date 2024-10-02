@@ -104,17 +104,8 @@ class MainActivity : ComponentActivity() {
                         openBottomSheet = { showBottomSheet = true }
                     )
                 }
-
                 // Use the search bar to update the input text
                 DestinationSearchBar(onTextChange = { inputText = it })
-
-                Button(onClick = {
-                    val context = this@MainActivity
-                    val intent = Intent(context, NavigationActivity::class.java)
-                    context.startActivity(intent)
-                }) {
-                    Text("Go to Second Activity")
-                }
 
                 // Pass the inputText and context to FindMyParkingButton
                 FindMyParkingButton(

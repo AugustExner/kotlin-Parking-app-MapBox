@@ -7,5 +7,7 @@ data class ParkingOverview(
     val ledigePladser: Int,
     val optagedePladser: Int,
     val latitude: String,
-    val longitude: String
+    val longitude: String,
+    var distance: Int,
+    var price: Double
 )
