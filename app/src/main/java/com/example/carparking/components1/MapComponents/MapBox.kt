@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.R
 import com.example.carparking.components1.parkingoverview.ParkingViewModel
@@ -32,9 +33,12 @@ fun MapBoxTest(
     context: Context,
     parkingViewModel: ParkingViewModel = viewModel(),
     destinationCoordinates: List<Double>? = null,
-    openBottomSheet: () -> Unit
+    openBottomSheet: () -> Unit,
+    destinationViewModel: DestinationViewModel = viewModel()
 ) {
     val parkingSpots = parkingViewModel.parkingSpots
+
+    //val pointDestination by destinationViewModel.destination
 
     val markerResourceId by remember {
         mutableIntStateOf(R.drawable.red_marker)
@@ -102,9 +106,34 @@ fun MapBoxTest(
             }
         } ?: Log.d("MapBoxTest", "No location available to add marker.")
 
+        /*
+        if (pointDestination != null) {
+            val marker = rememberIconImage(
+                key = markerResourceId,
+                painter = painterResource(markerResourceId)
+            )
+            PointAnnotation(point = pointDestination) {
+                iconImage = marker
+            }
+        }
+        */
+
+
         // Render parking spots on the map
         parkingSpots.map {
             CustomMapBoxMarker(parkingSpot = it, openBottomSheet = openBottomSheet)
         }
+    }
+}
+
+class DestinationViewModel : ViewModel() {
+    var destination by mutableStateOf<Location?>(null)
+        private set
+
+    fun setDest(lat: Double, lng: Double) {
+        destination!!.latitude = lat
+        destination!!.longitude = lng
+
+        Log.v("Hello", destination.toString())
     }
 }

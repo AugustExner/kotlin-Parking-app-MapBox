@@ -46,7 +46,8 @@ fun ModalBottomSheetParkingSpots(
                 Text(
                     text = searchQuery.replaceFirstChar { it.uppercase() },
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(

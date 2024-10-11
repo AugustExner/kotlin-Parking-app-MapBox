@@ -43,7 +43,7 @@ fun FindMyParkingButton(text: String, context: Context, onButtonClick: () -> Uni
             .padding(8.dp)
             .height(60.dp),
     ) {
-        Text("Find parking!", fontSize = 24.sp)
+        Text("Find Parking", fontSize = 24.sp)
 
     }
 }

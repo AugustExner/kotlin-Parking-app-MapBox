@@ -13,16 +13,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Blue60,
+    secondary = Blue60,
+    tertiary = Blue40,
+    onPrimary = Color.White,
+    onBackground = Color.Black,
+    onTertiary = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
     background = Color(0xFFF5F5F5) ,// Example background color
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Blue60,
+    secondary = Blue60,
+    tertiary = Blue40,
+    onPrimary = Color.White,
+    onTertiary = Color.Black
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -39,7 +45,7 @@ private val LightColorScheme = lightColorScheme(
 fun CarParkingTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

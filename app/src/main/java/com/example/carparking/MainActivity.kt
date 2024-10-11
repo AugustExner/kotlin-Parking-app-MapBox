@@ -1,7 +1,6 @@
 package com.example.carparking
 
 import NotificationHandler
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,19 +8,20 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carparking.Components.DestinationSearchBar
+import com.example.carparking.components1.MapComponents.DestinationViewModel
 import com.example.carparking.components1.MapComponents.MapBoxTest
 import com.example.carparking.components1.buttons.FindMyParkingButton
 import com.example.carparking.components1.geocoding.GeocodingViewModel
@@ -36,7 +36,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var permissionHandler: PermissionHandler
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,15 +49,16 @@ class MainActivity : ComponentActivity() {
                 CarParkingTheme {
                     // Call the main content including the bottom app bar
                     MainContent()
+
                 }
+
             }
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun MainContent(parkingViewModel: ParkingViewModel = viewModel()) {
-
+    fun MainContent(destinationViewModel: DestinationViewModel = viewModel()) {
         var showBottomSheet by remember { mutableStateOf(false) }  // Control for showing the bottom sheet
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
         var inputText by remember { mutableStateOf("") }  // State for storing the search input
@@ -79,22 +79,13 @@ class MainActivity : ComponentActivity() {
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .padding(8.dp)
             ) {
-                var inputText by remember { mutableStateOf("") }
+                //var inputText by remember { mutableStateOf("") }
 
                 // Display the map and components
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
-                        .height(500.dp)
-                        .clip(RoundedCornerShape(25.dp))
-                        .border(
-                            width = 2.dp,
-                            color = Color.Black,
-                            shape = RoundedCornerShape(25.dp)
-                        )
                 ) {
                     // Log destination coordinates before passing them
                     Log.d("MainActivity", "Destination Coordinates: $destinationCoordinates")
@@ -103,42 +94,55 @@ class MainActivity : ComponentActivity() {
                         destinationCoordinates = destinationCoordinates,
                         openBottomSheet = { showBottomSheet = true }
                     )
-                }
-                // Use the search bar to update the input text
-                DestinationSearchBar(onTextChange = { inputText = it })
+                    Box(
+                        Modifier
+                            .align(Alignment.BottomCenter)
+                            .clip(RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
+                            .background(MaterialTheme.colorScheme.background)) {
+                        Column {
+                            // Use the search bar to update the input text
+                            DestinationSearchBar(onTextChange = { inputText = it })
 
-                // Pass the inputText and context to FindMyParkingButton
-                FindMyParkingButton(
-                    text = inputText,
-                    context = this@MainActivity,
-                    onButtonClick = {
-                        // Log the input text before fetching coordinates
-                        Log.d("MainActivity", "Input Text: $inputText")
+                            // Pass the inputText and context to FindMyParkingButton
+                            FindMyParkingButton(
+                                text = inputText,
+                                context = this@MainActivity,
+                                onButtonClick = {
+                                    // Log the input text before fetching coordinates
+                                    Log.d("MainActivity", "Input Text: $inputText")
 
-                        // Use the GeocodingViewModel to fetch coordinates
-                        coroutineScope.launch {
-                            val coordinates =
-                                geocodingViewModel.getCoordinatesFromDestination(inputText)
+                                    // Use the GeocodingViewModel to fetch coordinates
+                                    coroutineScope.launch {
+                                        val coordinates =
+                                            geocodingViewModel.getCoordinatesFromDestination(
+                                                inputText
+                                            )
+                                        if (coordinates != null) {
+                                            destinationViewModel.setDest(
+                                                coordinates[0],
+                                                coordinates[1]
+                                            )
+                                        }
+                                        // Log the fetched coordinates
+                                        Log.d("MainActivity", "Fetched Coordinates: $coordinates")
 
-                            // Log the fetched coordinates
-                            Log.d("MainActivity", "Fetched Coordinates: $coordinates")
-
-                            coordinates?.let { fetchedCoordinates ->
-                                destinationCoordinates =
-                                    fetchedCoordinates // Update state with fetched coordinates
-                                showBottomSheet = true
-                            } ?: run {
-                                // Handle error case when coordinates are not found
-                                Log.e(
-                                    "GeocodingError",
-                                    "Coordinates not found for the destination."
-                                )
-                            }
+                                        coordinates?.let { fetchedCoordinates ->
+                                            destinationCoordinates =
+                                                fetchedCoordinates // Update state with fetched coordinates
+                                            showBottomSheet = true
+                                        } ?: run {
+                                            // Handle error case when coordinates are not found
+                                            Log.e(
+                                                "GeocodingError",
+                                                "Coordinates not found for the destination."
+                                            )
+                                        }
+                                    }
+                                }
+                            )
                         }
                     }
-
-                )
-
+                }
 
                 // Show the PartialBottomSheet when triggered
                 if (showBottomSheet) {
